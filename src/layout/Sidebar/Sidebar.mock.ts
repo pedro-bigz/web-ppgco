@@ -1,12 +1,18 @@
 import {
+  DashboardIcon,
   ManagementIcon,
   PartnerIcon,
   PreferencesIcon,
   RelatorioIcon,
   StoreIcon,
-  mainLogo,
-  shortMainLogo,
+  // mainLogo,
+  // shortMainLogo,
 } from "assets";
+import { CalendarIcon } from "assets/svg/calendar-icon";
+import { HoodIcon } from "assets/svg/hood-icon";
+import { PenIcon } from "assets/svg/pen-icon";
+import { SubjectsIcon } from "assets/svg/subjects-icon";
+import { UserGroupIcon } from "assets/svg/user-group-icon";
 import { GenericIconDefinition } from "components";
 
 export type ListMenuItemType = {
@@ -18,113 +24,33 @@ export type ListMenuItemType = {
 
 export const SIDEBAR_MENU_ITENS = [
   {
-    title: "Parceiros",
-    icon: PartnerIcon,
-    route: "/parceiros",
-    children: [
-      {
-        title: "Clientes",
-        route: "/clientes",
-      },
-      {
-        title: "Licenciados",
-        route: "/licenciados",
-      },
-    ],
+    title: "Dashboard",
+    icon: DashboardIcon,
+    route: "/dashboard",
   },
   {
-    title: "Gestão",
-    route: "/gestao",
-    icon: ManagementIcon,
-    children: [
-      { title: "Sucesso do Cliente", route: "/sucessoCliente" },
-      {
-        title: "Saque",
-        route: "/saque",
-      },
-      {
-        title: "Extrato Bônus",
-        route: "/extratoBonus",
-      },
-      {
-        title: "Extrato Bônus Detalhe",
-        route: "/extratoBonusDetalhe",
-      },
-      {
-        title: "Digital",
-        route: "/digital",
-      },
-      {
-        title: "Recebíveis Clientes",
-        route: "/recebiveisClientes",
-      },
-      {
-        title: "Relatório Inadimplência",
-        route: "/relatorioInadimplencia",
-      },
-      {
-        title: "Romaneio Kit",
-        route: "/romaneioKit",
-      },
-      {
-        title: "Conexão Livre",
-        route: "/conexaoLivre",
-      },
-      {
-        title: "Conexão Placas",
-        route: "/conexaoPlacas",
-      },
-    ],
+    title: "Disciplinas",
+    route: "/disciplinas",
+    icon: SubjectsIcon,
   },
   {
-    title: "Igreen Store",
-    icon: StoreIcon,
-    children: [
-      {
-        title: "Publicidade",
-        route: "/publicidade",
-      },
-    ],
+    title: "Marcos Temporais",
+    route: "/marcos-temporais",
+    icon: CalendarIcon,
   },
   {
-    title: "Relatórios",
-    route: "/relatorios",
-    icon: RelatorioIcon,
-    children: [
-      {
-        title: "Relatório de qualificados",
-        route: "/relatorio-qualificados",
-      },
-      {
-        title: "Licenciados PRO",
-        route: "/relatorio-licenciado-pro",
-      },
-      {
-        title: "Top Expansão",
-        route: "/relatorio-top-expansao",
-      },
-      {
-        title: "Top Conexão",
-        route: "/relatorio-top-conexao",
-      },
-    ],
+    title: "Publicações",
+    route: "/publicacoes",
+    icon: PenIcon,
   },
   {
-    title: "Preferências",
-    route: "/preferencias",
-    icon: PreferencesIcon,
-    children: [
-      {
-        title: "Disparos Push",
-        route: "/disparosPush",
-      },
-      {
-        title: "Campanhas",
-        route: "/campanhas",
-      },
-    ],
+    title: "Coorientadores",
+    route: "/coorientadores",
+    icon: UserGroupIcon,
+  },
+  {
+    title: "Alunos",
+    route: "/alunos",
+    icon: HoodIcon,
   },
 ] as ListMenuItemType[];
-
-export const shortLogo = shortMainLogo;
-export const fullLogo = mainLogo;

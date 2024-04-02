@@ -2,9 +2,11 @@ import axios from "axios";
 import jwtDecode from "jwt-decode";
 import dayjs from "dayjs";
 
-import { DecodedToken, refreshTokenApi } from "hooks";
+import { DecodedToken, useUserContext } from "hooks";
 import { tokenStorage } from "services";
 import { API_PPGCO_URL } from "core/env";
+
+import { refreshTokenApi } from "./refresh-token.api";
 
 export const axiosMain = axios.create({
   baseURL: API_PPGCO_URL,
@@ -37,8 +39,11 @@ axiosMain.interceptors.request.use(async (config: any) => {
     return request;
   }
 
-  await refreshTokenApi(refreshToken).then(({ auth }: any) => {
+  const { setUser } = useUserContext();
+
+  await refreshTokenApi(refreshToken).then(({ auth, user }: any) => {
     headers.Authorization = `Bearer ${auth.accessToken}`;
+    setUser(user);
   });
 
   return request;

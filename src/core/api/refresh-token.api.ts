@@ -17,9 +17,18 @@ export type TypeRefreshToken = z.infer<typeof refreshTokenSchema>;
 export const refreshTokenApi = (refreshToken: string) =>
   new Promise((resolve, reject) => {
     axios
-      .post<any, TypeRefreshToken>(`${API_PPGCO_URL}/auth/refresh-token`, {
-        refreshToken,
-      })
+      .post<any, TypeRefreshToken>(
+        `${API_PPGCO_URL}/auth/refresh-token`,
+        {
+          refreshToken,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${tokenStorage.getToken()}`,
+          },
+        }
+      )
       .then(({ data }: any) => {
         tokenStorage.setToken(data.auth.accessToken);
         resolve(data);

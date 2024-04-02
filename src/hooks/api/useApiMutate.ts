@@ -1,8 +1,9 @@
-import { useMutation, UseMutationResult } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 import { axiosInstances } from "core";
 import { TypeDefaultApiParams } from "./types";
+import { logger } from "utils";
 
 interface ParamsUseApiMutate extends TypeDefaultApiParams {
   method?: "put" | "post" | "patch" | "delete";
@@ -20,7 +21,8 @@ export const useApiMutate = <Param, Response>({
   enableDefaultToast = true,
 }: ParamsUseApiMutate) => {
   const apiFn = axiosInstances[instance][method];
-  const apiRequest = async (body: Param) => {
+
+  const apiRequest = async (body: Param): Promise<Response> => {
     try {
       const response = await apiFn<Response>(endpoint, body);
       const data = response?.data;
@@ -29,7 +31,7 @@ export const useApiMutate = <Param, Response>({
 
       const safeData = responseSchema.safeParse(data);
 
-      if (safeData.success) return safeData.data;
+      if (safeData.success) return safeData.data as Response;
 
       if (message?.error || enableDefaultToast) {
         toast.error(message?.error || "Houve um erro nos dados recebidos.");
@@ -47,10 +49,13 @@ export const useApiMutate = <Param, Response>({
     if (!paramsSchema) return apiRequest(body);
 
     const safeParams = paramsSchema.safeParse(body);
+    console.log({ safeParams });
 
     if (safeParams.success) {
       return apiRequest(body);
     }
+
+    logger.debug(safeParams.error);
 
     if (enableDefaultToast) {
       toast.error("Houve um problema com os dados para realizar a solicitação");

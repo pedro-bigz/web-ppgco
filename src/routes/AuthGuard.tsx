@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AppLayout } from "layout";
 import { tokenStorage } from "services";
 import { Spinner } from "@nextui-org/react";
+import { useUserContext } from "hooks";
 
 const Loading = (): JSX.Element => (
   <div className="flex items-center justify-center h-screen">
@@ -13,7 +14,7 @@ const Loading = (): JSX.Element => (
 export function AuthGuard(): JSX.Element {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const [isLogged, setIsLogged] = useState(true);
+  const { isLogged, setIsLogged } = useUserContext();
 
   useEffect(() => {
     const token = tokenStorage.getToken();

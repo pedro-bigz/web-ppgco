@@ -4,10 +4,10 @@ import { Button } from "@nextui-org/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Form, TextField, Checkbox } from "components";
-import { LoginFormDto, loginFormSchema } from "./LoginForm.dto";
-import { usePostLogin } from "views/Login/api";
 import { tokenStorage } from "services";
 import { useUserContext } from "hooks";
+import { usePostLogin, loginFormSchema, LoginFormDto } from "views/Login/api";
+import { useEffect } from "react";
 
 export function LoginForm() {
   const navigate = useNavigate();
@@ -21,10 +21,13 @@ export function LoginForm() {
   const { mutate: onSubmitForm } = usePostLogin();
 
   const handleSubmitForm = ({ keepConnected, ...formValues }: FieldValues) => {
+    console.log(formValues);
     tokenStorage.keepConnected(keepConnected);
 
     onSubmitForm(formValues as LoginFormDto, {
       onSuccess({ auth, user }) {
+        console.log({ auth, user });
+
         tokenStorage.setToken(auth.accessToken);
         tokenStorage.setRefreshToken(auth.refreshToken);
 
@@ -36,6 +39,11 @@ export function LoginForm() {
       },
     });
   };
+
+  useEffect(() => {
+    if (!formProps.formState.errors) return;
+    console.log({ errors: formProps.formState.errors });
+  }, [formProps.formState.errors]);
 
   return (
     <Form {...formProps} onSubmit={handleSubmitForm}>
@@ -57,11 +65,11 @@ export function LoginForm() {
             label="Senha"
             name="password"
             classNames={{
-              inputWrapper: "my-4 bg-gray-100 rounded-2xl",
+              inputWrapper: "mt-4 bg-gray-100 rounded-2xl",
             }}
           />
 
-          <Checkbox name="keepConnected" defaultSelected />
+          <Checkbox name="keepConnected" className="mt-4" defaultSelected />
           <label>Manter-me conectado</label>
         </div>
 

@@ -1,24 +1,20 @@
 import { SVGProps } from "react";
 export const DashboardIcon = ({
-  width = 24,
-  height = 24,
+  width = 18,
+  height = 18,
   ...props
 }: SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width={width}
     height={height}
+    width={width}
+    viewBox="0 0 18 18"
     fill="none"
-    color="#6A6E71"
     {...props}
   >
-    <g
-      stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={1.5}
-    >
-      <path d="M2 19h20M4.5 19v-5M9.5 19v-9M14.5 19V5M19.5 19v-7" />
-    </g>
+    <path
+      d="M6.25 2.125C6.25 1.08984 7.08984 0.25 8.125 0.25H9.375C10.4102 0.25 11.25 1.08984 11.25 2.125V15.875C11.25 16.9102 10.4102 17.75 9.375 17.75H8.125C7.08984 17.75 6.25 16.9102 6.25 15.875V2.125ZM0 9.625C0 8.58984 0.839844 7.75 1.875 7.75H3.125C4.16016 7.75 5 8.58984 5 9.625V15.875C5 16.9102 4.16016 17.75 3.125 17.75H1.875C0.839844 17.75 0 16.9102 0 15.875V9.625ZM14.375 2.75H15.625C16.6602 2.75 17.5 3.58984 17.5 4.625V15.875C17.5 16.9102 16.6602 17.75 15.625 17.75H14.375C13.3398 17.75 12.5 16.9102 12.5 15.875V4.625C12.5 3.58984 13.3398 2.75 14.375 2.75Z"
+      fill="#767676"
+    />
   </svg>
 );
