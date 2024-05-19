@@ -1,4 +1,5 @@
 import {
+  DatePicker,
   Input as NextInput,
   InputProps as NextInputProps,
 } from "@nextui-org/react";
@@ -63,6 +64,7 @@ export const Input: React.FC<InputProps> = ({
         onChange={onChange}
         isDisabled={disabled}
         isRequired={required}
+        isInvalid={Boolean(errorMessage)}
         errorMessage={errorMessage}
         maxLength={maxLength}
         position={position}
@@ -113,7 +115,10 @@ export const Input: React.FC<InputProps> = ({
       size={size}
       classNames={{
         ...classNames,
-        inputWrapper: classnames("border-small", classNames?.inputWrapper),
+        inputWrapper: classnames(
+          "border-small pt-0 pb-1",
+          classNames?.inputWrapper
+        ),
       }}
       onChange={onChange}
       isDisabled={disabled}

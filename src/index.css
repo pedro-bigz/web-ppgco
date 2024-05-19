@@ -20,7 +20,8 @@ body {
 }
 
 * {
-  font-family: "Nexa";
+  font-family: "SF Pro Display", sans-serif;
+  font-style: normal;
 }
 
 button {

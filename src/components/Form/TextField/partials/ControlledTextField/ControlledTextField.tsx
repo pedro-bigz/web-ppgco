@@ -90,6 +90,7 @@ export const ControlledTextField: React.FC<ControlledTextFieldProps> = ({
       mask={mask}
       maskConfig={maskConfig}
       position={position}
+      isInvalid={Boolean(error?.message)}
     />
   );
 };

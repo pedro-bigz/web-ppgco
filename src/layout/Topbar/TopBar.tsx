@@ -12,7 +12,7 @@ export function TopBar() {
 
   const title = navigation.title;
 
-  console.log({ user });
+  // console.log({ user });
 
   return (
     <div className="flex justify-between items-center bg-background drop-shadow top-0 z-40 pl-[15px] pr-[5px] md:pl-[36px] md:pr-[24px] py-[17px] gap-8">

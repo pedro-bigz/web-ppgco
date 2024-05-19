@@ -1,2 +1,1 @@
-export * from "./select";
-export type * from "./select";
+export * from "./Select";

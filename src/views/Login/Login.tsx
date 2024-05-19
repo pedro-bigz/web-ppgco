@@ -36,12 +36,6 @@ export function LoginPage() {
 
   return (
     <div className="flex h-screen">
-      <div className="hidden w-3/5 lg:flex h-1/1 flex-col justify-between bg-gray-100 p-5 text-white">
-        <div className="flex justify-center">
-          {/* <img src={LogoUFU45} alt="Logo iGreen Energy" className="w-7/12" /> */}
-        </div>
-      </div>
-
       <div className="flex w-full lg:w-2/5 flex-col justify-center content-center items-center">
         <img src={LogoUFU45} alt="brand" className="mb-4" />
         <Typography fontSize={32} fontWeight={"bold"} className="font-[Nexa]">
@@ -49,6 +43,12 @@ export function LoginPage() {
         </Typography>
         <div className="w-full pt-8 px-24">
           <LoginForm />
+        </div>
+      </div>
+
+      <div className="hidden w-3/5 lg:flex h-1/1 flex-col justify-between bg-gray-100 p-5 text-white">
+        <div className="flex justify-center">
+          {/* <img src={LogoUFU45} alt="Logo iGreen Energy" className="w-7/12" /> */}
         </div>
       </div>
     </div>

@@ -1,0 +1,20 @@
+@font-face {
+  font-family: "AbroSans";
+  font-style: normal;
+  font-weight: 300;
+  src: url("./OpenType-TT/AbroSans-Thin.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "AbroSans";
+  font-style: normal;
+  font-weight: 500;
+  src: url("./OpenType-TT/AbroSans-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "AbroSans";
+  font-style: normal;
+  font-weight: 700;
+  src: url("./OpenType-TT/AbroSans-Bold.ttf") format("truetype");
+}

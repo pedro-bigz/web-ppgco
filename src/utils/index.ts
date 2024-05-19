@@ -5,3 +5,5 @@ export * from "./deviceSizeCheck";
 export * from "./numbers";
 export * from "./strings";
 export * from "./debug";
+export * from "./forms";
+export * from "./events";

@@ -5,15 +5,18 @@ import {
   Dispatch,
   SetStateAction,
 } from "react";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 export type SidebarProviderValueInterface = {
   isOpen: boolean;
+  navigate: NavigateFunction;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   onOpenChange: () => void;
 };
 
 const SidebarProviderDefaultValues = {
   isOpen: false,
+  navigate: () => undefined,
   setIsOpen: () => undefined,
   onOpenChange: () => undefined,
 };
@@ -27,6 +30,7 @@ type SidebarProviderProps = {
 };
 
 export const SidebarProvider = ({ children }: SidebarProviderProps) => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(SidebarProviderDefaultValues.isOpen);
 
   const onOpenChange = () => setIsOpen(!isOpen);
@@ -35,6 +39,7 @@ export const SidebarProvider = ({ children }: SidebarProviderProps) => {
     <SidebarContext.Provider
       value={{
         isOpen,
+        navigate,
         setIsOpen,
         onOpenChange,
       }}

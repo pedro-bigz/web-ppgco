@@ -46,7 +46,7 @@ export function LoginForm() {
   }, [formProps.formState.errors]);
 
   return (
-    <Form {...formProps} onSubmit={handleSubmitForm}>
+    <Form {...formProps} onSubmit={formProps.handleSubmit(handleSubmitForm)}>
       <div className="flex flex-col">
         <div className="gap-4 mb-11">
           <TextField.Form

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AppLayout } from "layout";
 import { tokenStorage } from "services";
@@ -17,14 +17,26 @@ export function AuthGuard(): JSX.Element {
   const { isLogged, setIsLogged } = useUserContext();
 
   useEffect(() => {
-    const token = tokenStorage.getToken();
+    if (tokenStorage.hasToken()) {
+      tokenStorage.isValidToken().then((response) => {
+        console.log("isValid", response);
+        setIsLogged(response);
+        if (!response) {
+          tokenStorage.resetAllToken();
+          navigate("/login");
+        }
+      });
 
-    if (!token) navigate("/login");
+      return;
+    }
 
-    setIsLogged(true);
+    setIsLogged(false);
+    navigate("/login");
+  }, [pathname, isLogged]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  const Component = useMemo(() => {
+    return !isLogged ? Loading : AppLayout;
+  }, [isLogged]);
 
-  return !isLogged ? <Loading /> : <AppLayout />;
+  return <Component />;
 }

@@ -1,10 +1,16 @@
 import { SVGProps } from "react";
-export const ColabIcon = (props: SVGProps<SVGSVGElement>) => (
+export const ColabIcon = ({
+  width = 16,
+  height = 16,
+  color = "#767676",
+  ...props
+}: SVGProps<SVGSVGElement>) => (
   <svg
     {...props}
     xmlns="http://www.w3.org/2000/svg"
-    width={16}
-    height={16}
+    width={width}
+    height={height}
+    color={color}
     fill="none"
   >
     <path

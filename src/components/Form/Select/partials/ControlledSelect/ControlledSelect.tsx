@@ -1,58 +1,43 @@
 import { useController, useFormContext } from "react-hook-form";
-import { ChangeEvent } from "react";
 import {
+  OnChangeAttributes,
   Select,
-  SelectOption,
-  hasCustomization,
+  SelectOnChangeHandler,
   SelectProps,
-  Track,
 } from "../Select";
-import { TextField } from "components/Form/TextField";
 
 export interface ControlledSelectProps
-  extends Omit<SelectProps, "errorMessage" | "track"> {
-  track?: Track;
+  extends Omit<SelectProps, "errorMessage" | "onChange"> {
+  onChange?: SelectOnChangeHandler;
 }
 
-export const ControlledSelect: React.FC<ControlledSelectProps> = ({
+export const ControlledSelect = ({
   name,
-  track,
   onChange,
   variant = "bordered",
   defaultValue = "",
   ...props
-}) => {
-  const isCustomized = hasCustomization(track);
-  const selectName = isCustomized ? name + "_select" : name;
-
+}: ControlledSelectProps) => {
   const { control, setValue } = useFormContext();
   const { field, formState } = useController({
-    name: selectName,
+    name: name + "_select",
     control,
     defaultValue,
   });
   const error = formState.errors[name];
 
-  const onSelectChange = (
-    e: ChangeEvent<HTMLSelectElement>,
-    option?: SelectOption
-  ) => {
-    if (option) {
-      setValue(name, option);
-    }
-
+  const onSelectChange = ({ e, option }: OnChangeAttributes) => {
     field.onChange(e.target.value);
-    onChange?.(e, option);
+    setValue(name, option);
+    onChange?.({ e, option });
   };
 
   return (
     <>
-      {isCustomized && <TextField.Form isHidden name={name} />}
       <Select
         {...props}
-        track={track}
         variant={variant}
-        name={selectName}
+        name={name}
         value={field.value}
         errorMessage={error?.message as string}
         onChange={onSelectChange}

@@ -1,44 +1,14 @@
-import { ChangeEvent } from "react";
-import { TextField } from "components/Form/TextField";
-import {
-  Track,
-  Select,
-  SelectProps,
-  SelectOption,
-  hasCustomization,
-} from "../Select";
+import { Select, SelectProps } from "../Select";
 
-export interface UncontrolledSelectProps extends Omit<SelectProps, "track"> {
-  track?: Track;
-}
+export interface UncontrolledSelectProps extends SelectProps {}
 
-export const UncontrolledSelect: React.FC<UncontrolledSelectProps> = ({
-  name,
-  track,
-  onChange,
+export const UncontrolledSelect = ({
   variant = "bordered",
   ...props
-}) => {
-  const isCustomized = hasCustomization(track);
-  const selectName = isCustomized ? name + "_select" : name;
-
-  const onSelectChange = (
-    e: ChangeEvent<HTMLSelectElement>,
-    option?: SelectOption
-  ) => {
-    onChange?.(e, option);
-  };
-
+}: UncontrolledSelectProps) => {
   return (
     <>
-      {isCustomized && <TextField.Form isHidden name={name} />}
-      <Select
-        {...props}
-        track={track}
-        variant={variant}
-        name={selectName}
-        onChange={onSelectChange}
-      />
+      <Select {...props} variant={variant} />
     </>
   );
 };

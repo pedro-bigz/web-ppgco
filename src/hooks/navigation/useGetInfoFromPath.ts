@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom";
 
 const pathTitles = {
   "/": "Início",
+  "/disciplinas/cadastrar": "Disciplinas - Cadastro",
 };
 
 type PathKeys = keyof typeof pathTitles;

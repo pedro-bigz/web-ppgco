@@ -26,7 +26,13 @@ export default {
       },
       fontFamily: {
         nexa: ["Nexa", "sans-serif"],
+        sfPro: ["SF Pro", "sans-serif"],
+        sfProDisplay: ["SF Pro Display", "sans-serif"],
+        abrosans: ["AbroSans", "sans-serif"],
         montserrat: ["Montserrat", "sans-serif"],
+      },
+      boxShadow: {
+        leftShadow: "",
       },
     },
   },

@@ -13,7 +13,7 @@ export interface TypeDefaultApiParams {
   };
   queryKey?: string[];
   options?: {
-    [key: string]: string;
+    [key: string]: string | boolean | number;
   };
 }
 

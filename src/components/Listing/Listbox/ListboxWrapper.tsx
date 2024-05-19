@@ -1,19 +1,18 @@
 import classNames from "classnames";
+import { HTMLAttributes } from "react";
 
-interface ListboxWrapperProps {
+interface ListboxWrapperProps extends HTMLAttributes<HTMLDivElement> {
   children: JSX.Element;
-  className?: string;
 }
 
 export const ListboxWrapper = ({
   children,
   className,
+  ...otherProps
 }: ListboxWrapperProps) => (
   <div
-    className={classNames(
-      "flex flex-col items-center mx-[21px] my-[14px] w-full max-w-[260px] px-1 py-2",
-      className
-    )}
+    {...otherProps}
+    className={classNames("flex flex-col items-center w-full", className)}
   >
     {children}
   </div>

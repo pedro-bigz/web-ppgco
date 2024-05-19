@@ -33,6 +33,7 @@ type UserProviderProps = {
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [isLogged, setIsLogged] = useState(UserProviderDefaultValues.isLogged);
   const [user, setUser] = useState(UserProviderDefaultValues.user);
+
   const { data } = useUserApi();
 
   useEffect(() => setUser(data as Record<string, any>), [data]);
