@@ -6,17 +6,7 @@ export function SubjectsListingPage() {
   return (
     <ListingProvider>
       <ListingHeader title="Disciplinas" />
-
-      <ListingBody
-        endpoint="/subjects"
-        columns={columns}
-        actions={[
-          {
-            label: "teste",
-            onClick: (...args: any[]) => console.log("action teste", ...args),
-          },
-        ]}
-      />
+      <ListingBody endpoint="/subjects" columns={columns} />
     </ListingProvider>
   );
 }

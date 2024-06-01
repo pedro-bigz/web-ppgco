@@ -33,7 +33,6 @@ export const UncontrolledTextField: React.FC<UncontrolledTextFieldProps> = ({
   isPassword = false,
   position,
   onChange,
-  variant = "bordered",
   ...props
 }) => {
   const onInputChange = (...e: any[]) => {
@@ -43,7 +42,6 @@ export const UncontrolledTextField: React.FC<UncontrolledTextFieldProps> = ({
   return (
     <Input
       {...props}
-      variant={variant}
       name={name}
       label={label}
       placeholder={placeholder}

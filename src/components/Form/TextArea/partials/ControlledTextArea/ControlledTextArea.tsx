@@ -9,6 +9,7 @@ import {
   Textarea as NextTextarea,
   TextAreaProps as NextTextAreaProps,
 } from "@nextui-org/react";
+import classnames from "classnames";
 
 export interface ControlledTextAreaProps extends NextTextAreaProps {
   name: string;
@@ -28,6 +29,7 @@ export interface ControlledTextAreaProps extends NextTextAreaProps {
 export const ControlledTextArea: React.FC<ControlledTextAreaProps> = ({
   name,
   label = "",
+  classNames,
   placeholder,
   required,
   disabled,
@@ -63,6 +65,10 @@ export const ControlledTextArea: React.FC<ControlledTextAreaProps> = ({
       isRequired={required}
       errorMessage={error?.message as string}
       maxLength={maxLength}
+      classNames={{
+        ...classNames,
+        inputWrapper: classnames("border-small", classNames?.inputWrapper),
+      }}
     />
   );
 };

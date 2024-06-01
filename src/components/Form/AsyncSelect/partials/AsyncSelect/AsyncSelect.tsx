@@ -9,9 +9,7 @@ import _isEqual from "lodash/isEqual";
 import _mapKeys from "lodash/mapKeys";
 import classnames from "classnames";
 
-import { TextField } from "components/Form/TextField";
 import { useAsyncSelect } from "./useAsyncSelect";
-import { useMapOptions } from "./useMapOptions";
 import { SelectOption, Track } from "components/Form/Select";
 import { OptionKey } from "./useSelectOptions";
 
@@ -57,7 +55,6 @@ export const AsyncSelect: React.FC<AsyncSelectProps> = ({
   value,
   inputProps,
   errorMessage,
-  variant = "bordered",
   ...props
 }) => {
   const autocompleteRef = useRef<HTMLInputElement>(null);
@@ -106,7 +103,6 @@ export const AsyncSelect: React.FC<AsyncSelectProps> = ({
       ref={autocompleteRef}
       required={required}
       name={name}
-      variant={variant}
       label={label}
       value={value}
       startContent={!startAdornment ? undefined : <>{startAdornment}</>}

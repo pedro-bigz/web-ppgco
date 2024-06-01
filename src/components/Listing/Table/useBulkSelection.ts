@@ -11,7 +11,6 @@ export const useBulkSelection = ({ onSelectKeys }: UseBulkSelectionParams) => {
   const [selectedKeys, setSelectedKeys] = useState<Set<Key>>(new Set([]));
 
   const handleOnSelectionChange = (keys: Selection) => {
-    console.log(keys);
     onSelectKeys?.(new Set([...keys]));
     setSelectedKeys?.(new Set([...keys]));
   };

@@ -10,6 +10,7 @@ import {
   DropdownItem,
   DropdownProps,
   Button,
+  DropdownMenuProps,
 } from "@nextui-org/react";
 import { TableColumnAttributes } from "./Table";
 import { AscSortIcon, DescSortIcon } from "assets";
@@ -25,6 +26,7 @@ export interface HeaderMenuProps {
     e: MouseEvent<HTMLLIElement>
   ) => void;
   dropdownProps?: Omit<DropdownProps, "children">;
+  dropdownMenuProps?: Omit<DropdownMenuProps, "children">;
 }
 
 export const HeaderMenu = ({
@@ -33,6 +35,7 @@ export const HeaderMenu = ({
   column,
   onSort,
   dropdownProps = {},
+  dropdownMenuProps = {},
 }: HeaderMenuProps) => {
   const handleSort = (direction: Order) => {
     return (e: MouseEvent<HTMLLIElement>) => {
@@ -47,17 +50,15 @@ export const HeaderMenu = ({
           isIconOnly
           size="sm"
           radius="full"
-          className={classNames("bg-transparent hover:bg-gray-300", {
-            hidden: !isVisible,
-          })}
+          className="bg-transparent hover:bg-gray-300 mx-1"
         >
-          <FontAwesomeIcon icon={faEllipsisVertical} />
+          <FontAwesomeIcon
+            className={classNames({ hidden: !isVisible })}
+            icon={faEllipsisVertical}
+          />
         </Button>
       </DropdownTrigger>
-      <DropdownMenu
-        aria-label="Action event example"
-        onAction={(key) => alert(key)}
-      >
+      <DropdownMenu aria-label="Action event example" {...dropdownMenuProps}>
         <DropdownItem
           key="sort_asc"
           startContent={<AscSortIcon />}

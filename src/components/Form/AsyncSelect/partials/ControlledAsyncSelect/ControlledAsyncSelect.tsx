@@ -16,11 +16,11 @@ export const ControlledAsyncSelect = ({
   name,
   track,
   onChange,
-  variant = "bordered",
   defaultValue = "",
   ...props
 }: ControlledAsyncSelectProps) => {
   const selectName = name + "_" + track.key;
+
   const { control, setValue } = useFormContext();
   const { field, formState } = useController({
     name: selectName,
@@ -28,9 +28,9 @@ export const ControlledAsyncSelect = ({
     defaultValue,
   });
   const error = formState.errors[name];
+  const selectError = formState.errors[selectName];
 
   const onSelectChange = ({ e, option }: OnChangeAttributes) => {
-    console.log({ [selectName]: e.target.value, target: e.target });
     field.onChange(e.target.value);
     setValue(name, option);
     onChange?.({ e, option });
@@ -42,10 +42,9 @@ export const ControlledAsyncSelect = ({
       <AsyncSelect
         {...props}
         track={track}
-        variant={variant}
         name={selectName}
         value={field.value}
-        errorMessage={error?.message as string}
+        errorMessage={(error?.message ?? selectError?.message) as string}
         onChange={onSelectChange}
       />
     </>

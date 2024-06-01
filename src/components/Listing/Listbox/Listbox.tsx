@@ -15,14 +15,14 @@ export type ListboxItemOptionValue = any;
 export type ListboxItemOption = Record<string, ListboxItemOptionValue>;
 export type ListboxItemOptions = ListboxItemOption[];
 
-export interface Track {
+export interface ListboxTrack {
   label: string;
   key: string;
 }
 
 export interface ListboxProps extends Omit<NextListboxProps, "children"> {
   items: ListboxItemOptions;
-  track: Track;
+  track: ListboxTrack;
   wrapperProps?: Omit<HTMLAttributes<HTMLDivElement>, "children">;
   itemProps?: NextListboxItemProps;
 }

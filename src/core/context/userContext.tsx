@@ -36,14 +36,16 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
   const { data } = useUserApi();
 
-  useEffect(() => setUser(data as Record<string, any>), [data]);
+  useEffect(() => {
+    setUser(data as Record<string, any>);
+  }, [data]);
 
   return (
     <UserContext.Provider
       value={{
         user,
-        setUser,
         isLogged,
+        setUser,
         setIsLogged,
       }}
     >

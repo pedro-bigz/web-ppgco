@@ -13,8 +13,3 @@ export const fgColors = {
   error: "text-red-900",
   warn: "text-amber-400",
 };
-export const titles = {
-  success: "text-green-700",
-  error: "text-red-900",
-  warn: "text-amber-400",
-};

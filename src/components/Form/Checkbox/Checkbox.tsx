@@ -12,6 +12,7 @@ interface CheckboxProps extends NextCheckboxProps {
 export const Checkbox: React.FC<CheckboxProps> = ({
   name,
   label,
+  onChange,
   defaultSelected,
   ...props
 }) => {
@@ -24,6 +25,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     field.onChange(Boolean((event.target as HTMLInputElement).checked));
+    onChange?.(event);
   };
 
   return (

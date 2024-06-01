@@ -22,7 +22,6 @@ export function Sidebar() {
 
   const handleNavigate = (item: ListMenuItemType) => {
     return (e: MouseEvent<HTMLLIElement>) => {
-      console.log({ e, item });
       navigate(item.route);
     };
   };

@@ -39,7 +39,6 @@ export const ControlledTextField: React.FC<ControlledTextFieldProps> = ({
   forcedValue = "",
   position,
   onChange,
-  variant = "bordered",
   ...props
 }) => {
   const { control } = useFormContext();
@@ -69,7 +68,6 @@ export const ControlledTextField: React.FC<ControlledTextFieldProps> = ({
     <Input
       {...props}
       name={name}
-      variant={variant}
       label={label}
       classNames={{
         inputWrapper: classnames("px-[16px]", classNames?.innerWrapper),

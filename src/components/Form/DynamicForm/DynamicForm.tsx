@@ -2,9 +2,16 @@ import { ReactNode } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UseQueryResult } from "@tanstack/react-query";
 import _trimEnd from "lodash/trimEnd";
-import { FormRequestMethods, useCustomForm, UseFormOptions } from "hooks";
+import {
+  FormRequestMethods,
+  useCustomForm,
+  UseCustomFormReturn,
+  UseFormOptions,
+} from "hooks";
 import { ZodSchema } from "zod";
 import { CardForm } from "components/Form/Form";
+
+type ChildrenFunction = (props: UseCustomFormReturn) => JSX.Element;
 
 export interface DynamicFormProps
   extends Omit<UseFormOptions, "defaultValues"> {
@@ -12,11 +19,11 @@ export interface DynamicFormProps
   action: string;
   method?: FormRequestMethods;
   schema: ZodSchema;
-  children: ReactNode;
+  children: ReactNode | ChildrenFunction;
   useGetItem: (registerId?: string) => UseQueryResult;
 }
 
-function resolveEndpoint(endpoint: string, registerId = "") {
+export function resolveEndpoint(endpoint: string, registerId = "") {
   return _trimEnd([endpoint, registerId].join("/"), "/");
 }
 
@@ -46,9 +53,13 @@ export function DynamicForm({
       defaultValues: subject,
     }
   );
+
+  const ChildrenRenderer =
+    typeof children !== "function" ? () => children : children;
+
   return (
     <CardForm {...formProps} onSubmit={handleOnSubmit}>
-      {children}
+      {ChildrenRenderer({ onSubmit, handleOnSubmit, ...formProps })}
     </CardForm>
   );
 }

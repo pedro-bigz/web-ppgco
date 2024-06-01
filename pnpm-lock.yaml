@@ -20,6 +20,9 @@ dependencies:
   '@hookform/resolvers':
     specifier: ^3.3.4
     version: 3.3.4(react-hook-form@7.51.2)
+  '@internationalized/date':
+    specifier: ^3.5.3
+    version: 3.5.3
   '@mui/material':
     specifier: ^5.15.14
     version: 5.15.14(@emotion/react@11.11.4)(@emotion/styled@11.11.5)(@types/react@18.2.73)(react-dom@18.2.0)(react@18.2.0)
@@ -41,6 +44,9 @@ dependencies:
   '@nextui-org/use-infinite-scroll':
     specifier: ^2.1.3
     version: 2.1.3(react@18.2.0)
+  '@react-aria/i18n':
+    specifier: ^3.11.0
+    version: 3.11.0(react@18.2.0)
   '@tanstack/react-query':
     specifier: ^5.28.9
     version: 5.28.9(react@18.2.0)

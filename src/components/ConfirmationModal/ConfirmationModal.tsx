@@ -6,7 +6,7 @@ import {
   ModalFooter,
   Button,
 } from "@nextui-org/react";
-import { borderColors, titles } from "./ConfirmationModal.mock";
+import { borderColors } from "./ConfirmationModal.mock";
 
 export interface ConfirmationEventHandler<R = void> {
   (...args: any[]): R;
@@ -15,6 +15,7 @@ export interface ConfirmationEventHandler<R = void> {
 export interface ConfirmationModalInterface {
   status: "success" | "error" | "warn";
   isOpen: boolean;
+  title: string | JSX.Element;
   description: string | JSX.Element;
   onOpenChange: ConfirmationEventHandler;
   onAccept?: ConfirmationEventHandler;
@@ -25,6 +26,7 @@ export interface ConfirmationModalInterface {
 export const ConfirmationModal = ({
   status,
   isOpen,
+  title,
   description,
   onOpenChange,
   onAccept,
@@ -52,9 +54,7 @@ export const ConfirmationModal = ({
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">
-              {titles[status]}
-            </ModalHeader>
+            <ModalHeader className="flex flex-col gap-1">{title}</ModalHeader>
             <ModalBody>{description}</ModalBody>
             <ModalFooter>
               <Button

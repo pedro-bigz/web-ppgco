@@ -1,5 +1,8 @@
 import { useController, useFormContext } from "react-hook-form";
 import { DatePicker, DatePickerProps } from "../DatePicker";
+import { TextField } from "components/Form/TextField";
+import { useEffect, useState } from "react";
+import { DateValue } from "@nextui-org/react";
 
 export interface ControlledDatePickerProps extends DatePickerProps {
   name: string;
@@ -13,34 +16,39 @@ export const ControlledDatePicker = ({
   onChange,
   onFieldChange,
   size = "sm",
-  variant = "bordered",
   ...props
 }: ControlledDatePickerProps) => {
-  const { control } = useFormContext();
+  const pickerName = name + "_picker";
+
+  const { control, setValue } = useFormContext();
   const { field, formState } = useController({
-    name,
+    name: pickerName,
     control,
     defaultValue,
   });
   const error = formState.errors[name];
+  const pickerError = formState.errors[pickerName];
 
-  const onInputChange = (...e: any[]) => {
-    console.log({ e });
-    onChange?.(...e);
+  const onInputChange = (e: DateValue) => {
+    onChange?.(e);
     onFieldChange?.(field);
-    field.onChange(...e);
+    setValue(name, e.toString());
+    field.onChange(e);
   };
 
   return (
-    <DatePicker
-      {...props}
-      fullWidth
-      name={name}
-      value={field.value}
-      size={size}
-      variant={variant}
-      onChange={onInputChange}
-      errorMessage={error?.message as string}
-    />
+    <>
+      <TextField.Form isHidden name={name} />
+      <DatePicker
+        {...props}
+        fullWidth
+        name={pickerName}
+        defaultValue={field.value}
+        value={field.value}
+        size={size}
+        onChange={onInputChange}
+        errorMessage={(error?.message ?? pickerError?.message) as string}
+      />
+    </>
   );
 };

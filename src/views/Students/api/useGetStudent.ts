@@ -4,7 +4,7 @@ export interface UseGetStudentParams {
   studentId?: string;
 }
 
-export const useGetStudent = ({ studentId }: UseGetStudentParams) => {
+export const useGetStudent = (studentId?: string) => {
   return useApiQuery({
     endpoint: "/student/" + studentId,
     options: { enabled: Boolean(studentId) },

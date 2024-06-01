@@ -21,15 +21,16 @@ export function initFormFields({ data, setForm }: SetFormFieldsInterface) {
           if (containsOnlyNumbers(fieldValue)) {
             return { ...accum, [key]: fieldValue };
           }
-          if (dayjs(fieldValue, "DD/MM/YYYY", true).isValid()) {
-            return { ...accum, [key]: dayjs(fieldValue).format("DD/MM/YYYY") };
-          }
+          // if (dayjs(fieldValue, "DD/MM/YYYY", true).isValid()) {
+          //   return { ...accum, [key]: dayjs(fieldValue).format("DD/MM/YYYY") };
+          // }
           return { ...accum, [key]: fieldValue };
         }
         return accum;
       },
       {}
     );
+    console.log({ payload });
     setForm(payload);
   }
 }

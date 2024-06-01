@@ -10,21 +10,13 @@ export const UncontrolledDatePicker = ({
   defaultValue,
   onChange,
   size = "sm",
-  variant = "bordered",
   ...props
 }: UncontrolledDatePickerProps) => {
   const onInputChange = (...e: any[]) => {
-    console.log({ e });
     onChange?.(...e);
   };
 
   return (
-    <DatePicker
-      {...props}
-      fullWidth
-      size={size}
-      variant={variant}
-      onChange={onInputChange}
-    />
+    <DatePicker {...props} fullWidth size={size} onChange={onInputChange} />
   );
 };

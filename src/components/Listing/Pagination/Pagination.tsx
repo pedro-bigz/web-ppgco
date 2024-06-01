@@ -5,14 +5,6 @@ import { useEffect } from "react";
 export const Pagination = () => {
   const { page, totalPages, setPage } = useListingContext();
 
-  useEffect(() => {
-    console.log({ totalPages });
-  }, [totalPages]);
-
-  useEffect(() => {
-    console.log({ page });
-  }, [page]);
-
   return (
     <NextPagination
       loop

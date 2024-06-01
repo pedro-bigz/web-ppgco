@@ -97,3 +97,32 @@ p {
 *::-webkit-scrollbar-thumb:active {
   background-color: #000000;
 }
+
+div[data-slot="base"] div[data-slot="input-wrapper"] {
+  border: 1px solid #dedede;
+}
+
+div[data-slot="base"] div[data-slot="content"] {
+  min-width: 275px;
+}
+
+/* width */
+div.next-table::-webkit-scrollbar {
+  height: 10px;
+}
+
+/* Track */
+div.next-table::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+div.next-table::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 8px;
+}
+
+/* Handle on hover */
+div.next-table::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

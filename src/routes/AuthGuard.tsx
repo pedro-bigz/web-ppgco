@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AppLayout } from "layout";
 import { tokenStorage } from "services";
@@ -21,6 +21,7 @@ export function AuthGuard(): JSX.Element {
       tokenStorage.isValidToken().then((response) => {
         console.log("isValid", response);
         setIsLogged(response);
+
         if (!response) {
           tokenStorage.resetAllToken();
           navigate("/login");

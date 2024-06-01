@@ -21,13 +21,10 @@ export function LoginForm() {
   const { mutate: onSubmitForm } = usePostLogin();
 
   const handleSubmitForm = ({ keepConnected, ...formValues }: FieldValues) => {
-    console.log(formValues);
     tokenStorage.keepConnected(keepConnected);
 
     onSubmitForm(formValues as LoginFormDto, {
       onSuccess({ auth, user }) {
-        console.log({ auth, user });
-
         tokenStorage.setToken(auth.accessToken);
         tokenStorage.setRefreshToken(auth.refreshToken);
 
@@ -40,11 +37,6 @@ export function LoginForm() {
     });
   };
 
-  useEffect(() => {
-    if (!formProps.formState.errors) return;
-    console.log({ errors: formProps.formState.errors });
-  }, [formProps.formState.errors]);
-
   return (
     <Form {...formProps} onSubmit={formProps.handleSubmit(handleSubmitForm)}>
       <div className="flex flex-col">
@@ -54,6 +46,7 @@ export function LoginForm() {
             type="email"
             name="email"
             label="E-mail"
+            defaultValue="ppgco.ufu@gmail.com"
             classNames={{
               inputWrapper: "bg-gray-100 rounded-2xl",
             }}
@@ -64,6 +57,7 @@ export function LoginForm() {
             size="lg"
             label="Senha"
             name="password"
+            defaultValue="Dev@1010"
             classNames={{
               inputWrapper: "mt-4 bg-gray-100 rounded-2xl",
             }}

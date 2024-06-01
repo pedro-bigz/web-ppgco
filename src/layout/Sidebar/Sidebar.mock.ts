@@ -4,6 +4,7 @@ import {
   PartnerIcon,
   PreferencesIcon,
   RelatorioIcon,
+  ResearchLineIcon,
   StoreIcon,
   // mainLogo,
   // shortMainLogo,
@@ -44,13 +45,18 @@ export const SIDEBAR_MENU_ITENS = [
     icon: PenIcon,
   },
   {
-    title: "Coorientadores",
-    route: "/coorientadores",
+    title: "Professores",
+    route: "/professores",
     icon: UserGroupIcon,
   },
   {
-    title: "Alunos",
-    route: "/alunos",
+    title: "Estudantes",
+    route: "/estudantes",
     icon: HoodIcon,
+  },
+  {
+    title: "Linhas de Pesquisa",
+    route: "/linhas-de-pesquisa",
+    icon: ResearchLineIcon,
   },
 ] as ListMenuItemType[];

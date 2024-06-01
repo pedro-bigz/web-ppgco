@@ -1,4 +1,4 @@
-import { Key, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import _get from "lodash/get";
 import _isEmpty from "lodash/isEmpty";
 import _isEqual from "lodash/isEqual";
@@ -50,11 +50,10 @@ export const useSelectOptions = ({
   };
 
   const getOption = (key: OptionKey) => {
-    return optionsMap[key];
+    return _get(optionsMap, key);
   };
 
   const onLoadMore = () => {
-    console.log("onEnd");
     const searchIn = search ? track.label : undefined;
     const currentPage = getNextPage();
     setPage(currentPage);
@@ -67,7 +66,7 @@ export const useSelectOptions = ({
     if (_isEmpty(search)) return resetSearch();
 
     const option = getOption(selected as string);
-    if (search === option?.[track.label]) return;
+    if (search === _get(option, track.label)) return;
 
     loadData({
       page: 1,
@@ -85,26 +84,6 @@ export const useSelectOptions = ({
       shouldResetOptions: true,
     });
   };
-
-  // const onLoadOptions = async (inputValue: string) => {
-  //   const adaptOptions = (options: SelectOptions) =>
-  //     options.map((option) => ({
-  //       label: option[track.label],
-  //       value: option[track.key],
-  //     }));
-
-  //   if (!_isEmpty(search) && !_isEmpty(inputValue)) {
-  //     return loadData({ page, perPage }).then(adaptOptions);
-  //   }
-  //   if (!_isEmpty(search) && _isEmpty(inputValue)) {
-  //     return onSearch().then(adaptOptions);
-  //   }
-  //   if (search === inputValue) {
-  //     return onLoadMore().then(adaptOptions);
-  //   }
-
-  //   return onSearch(inputValue).then(adaptOptions);
-  // };
 
   const loadData = ({
     page,
@@ -127,7 +106,6 @@ export const useSelectOptions = ({
         _differenceBy(data.data, options);
       setOptions((prevOptions) => [...prevOptions, ...getNewData(prevOptions)]);
       setHasMore(Boolean(data.nextPage));
-      console.log({ hasMore: Boolean(data.nextPage) });
     };
 
     const onPromiseResolve = (response: AxiosResponse) => {

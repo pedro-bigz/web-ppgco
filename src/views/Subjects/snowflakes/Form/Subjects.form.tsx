@@ -22,7 +22,7 @@ export const SubjectsForm = ({ subjectId, schema }: SubjectsFormProps) => {
     >
       <div className="flex flex-col gap-3">
         <h3 className="text-base font-bold font-montserrat mb-2">
-          Formulário de cadastro de Disciplinas
+          Formulário de {!subjectId ? "cadastro" : "edição"} de Disciplinas
         </h3>
         <div className="flex grid md:grid-cols-4 gap-3">
           <TextField.Form name="code" label="Código" />
@@ -34,12 +34,11 @@ export const SubjectsForm = ({ subjectId, schema }: SubjectsFormProps) => {
             label="Curso"
             endpoint="courses"
             track={{ label: "name", key: "id" }}
-            onChange={console.log}
           />
           <TextField.Form mask={Number} name="workload" label="Carga Horária" />
           <TextField.Form mask={Number} name="credits" label="Créditos" />
         </div>
-        <div className="flex justify-end">
+        <div className="flex justify-end mt-5">
           <Button
             type="submit"
             className="px-10"
@@ -47,7 +46,7 @@ export const SubjectsForm = ({ subjectId, schema }: SubjectsFormProps) => {
             variant="solid"
             color="primary"
           >
-            Cadastrar
+            {!subjectId ? "Cadastrar" : "Atualizar Registro"}
           </Button>
         </div>
       </div>

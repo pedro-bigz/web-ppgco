@@ -16,6 +16,6 @@ const schema = z.object({
   course_id: z.string().transform((num) => +num),
 });
 
-export const SubjectsEditPage = () => {
+export const SubjectsUpdatePage = () => {
   return <SubjectsForm subjectId={useID()} schema={schema} />;
 };

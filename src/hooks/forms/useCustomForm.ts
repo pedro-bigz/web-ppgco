@@ -13,6 +13,7 @@ import { initFormFields } from "utils";
 import { useApiMutate } from "hooks/api";
 import { useLoadingContext } from "hooks/contexts";
 import _trim from "lodash/trim";
+import { queryClient } from "core";
 
 export interface SubmitHandler {
   onSubmit: (data: FieldValues) => any;
@@ -50,6 +51,12 @@ export interface UseFormOptions {
 
 export type FormRequestMethods = "post" | "patch";
 
+export type UseCustomFormReturn<
+  TFieldValues extends FieldValues = FieldValues,
+  TContext = any,
+  TTransformedValues extends FieldValues | undefined = undefined
+> = UseFormReturn<TFieldValues, TContext, TTransformedValues> & SubmitHandler;
+
 export function useCustomForm<
   TFieldValues extends FieldValues = FieldValues,
   TContext = any,
@@ -59,7 +66,7 @@ export function useCustomForm<
   method: FormRequestMethods,
   hookFormProps?: UseHookFormProps<TFieldValues, TContext>,
   options?: UseFormOptions
-): UseFormReturn<TFieldValues, TContext, TTransformedValues> & SubmitHandler {
+): UseCustomFormReturn<TFieldValues, TContext, TTransformedValues> {
   const navigate = useNavigate();
   const formProps = useHookForm(hookFormProps);
 
@@ -85,9 +92,13 @@ export function useCustomForm<
   const onSubmit = (data: FieldValues) => {
     setIsLoading(true);
 
+    console.log({ data });
+
     onSubmitCallbacks?.beforeSubmit?.(data);
     mutate(data, {
       onSuccess(data: unknown, variables: unknown, context: unknown) {
+        queryClient.removeQueries();
+
         const message = onSubmitCallbacks?.onSuccess
           ? onSubmitCallbacks?.onSuccess(data, variables, context)
           : "Registrado com sucesso";
@@ -119,6 +130,8 @@ export function useCustomForm<
   };
 
   const handleOnSubmit = formProps.handleSubmit(onSubmit);
+
+  console.log({ errors: formProps.formState.errors });
 
   useEffect(() => {
     if (!defaultValues) return;

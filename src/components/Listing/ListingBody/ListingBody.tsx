@@ -10,9 +10,15 @@ import {
 } from "../Table";
 import { useDeleteItems, DeleteApiCallbacks } from "./useDeleteItems";
 import { useListing } from "./useListing";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
+import { EditIcon, TrashBIcon, TrashIcon } from "assets";
 
 export interface ListingBodyInterface {
-  rowKey?: string | number;
+  track?: {
+    key: string | number;
+    label: string;
+  };
   actions?: ActionsItem[];
   endpoint: string;
   columns: TableColumnAttributes[];
@@ -23,7 +29,10 @@ export const ListingBody = ({
   endpoint,
   columns,
   actions,
-  rowKey = "id",
+  track = {
+    key: "id",
+    label: "name",
+  },
   onDeleteCallbacks,
 }: ListingBodyInterface) => {
   const navigate = useNavigate();
@@ -37,7 +46,7 @@ export const ListingBody = ({
     useState<boolean>(false);
 
   const onDelete = () => {
-    deleteItem(+item[rowKey]!, {
+    deleteItem(+item[track.key]!, {
       onSuccess(data: any) {
         if (onDeleteCallbacks?.onSuccess) {
           return onDeleteCallbacks?.onSuccess(data);
@@ -52,7 +61,7 @@ export const ListingBody = ({
       },
       onSettled() {
         removeItem<TableRowInterface>((current: TableRowInterface) => {
-          return current[rowKey] === item[rowKey];
+          return current[track.key] === item[track.key];
         });
         setItem({});
       },
@@ -64,25 +73,40 @@ export const ListingBody = ({
       <ConfirmationModal
         status={"warn"}
         isOpen={isShownConfirmation}
-        description={<div>Deletar item?</div>}
+        title="Confirmação de deleção"
+        description={
+          <div>
+            <div>Deseja realmente deletar este item?</div>
+            <div>
+              <span className="font-bold">
+                <span className="text-base">{item[track.key]}</span> -{" "}
+                <span className="text-2xl">{item[track.label]}</span>
+              </span>
+            </div>
+          </div>
+        }
         onOpenChange={setIsShownConfirmation}
         onAccept={onDelete}
         onReject={console.log}
       />
       <Table
-        rowKey={rowKey}
+        rowKey={track.key}
         rows={data as TableRowInterface[]}
         columns={columns}
         isLoading={isLoading}
         actions={[
           {
             label: "Editar",
+            className: "text-primary text-lg font-bold font-nexa",
+            icon: () => <EditIcon className="mx-2" width={14} height={14} />,
             onClick(item: TableRowInterface) {
-              navigate(`${pathname}/${item[rowKey]}/editar`);
+              navigate(`${pathname}/${item[track.key]}/editar`);
             },
           },
           {
             label: "Deletar",
+            className: "text-danger text-lg font-bold font-nexa",
+            icon: () => <TrashBIcon className="mx-2" width={13} height={17} />,
             onClick(item: TableRowInterface) {
               setItem(item);
               setIsShownConfirmation(true);

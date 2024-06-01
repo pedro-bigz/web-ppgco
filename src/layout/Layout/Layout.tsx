@@ -12,7 +12,7 @@ export function AppLayout() {
         <div className="w-screen h-screen overflow-x-hidden overflow-y-auto">
           <TopBar />
           <div className="p-3">
-            <div className="p-[14px] md:p-[36px]">
+            <div className="p-[14px] lg:p-[36px]">
               <Outlet />
             </div>
           </div>

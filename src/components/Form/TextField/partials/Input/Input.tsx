@@ -45,7 +45,6 @@ export const Input: React.FC<InputProps> = ({
   classNames,
   onChange,
   onValueChange,
-  variant,
   ...props
 }) => {
   if (isHidden) {
@@ -68,7 +67,6 @@ export const Input: React.FC<InputProps> = ({
         errorMessage={errorMessage}
         maxLength={maxLength}
         position={position}
-        variant={variant}
         classNames={{
           ...classNames,
           inputWrapper: classnames(
@@ -95,7 +93,6 @@ export const Input: React.FC<InputProps> = ({
         maxLength={maxLength}
         mask={mask}
         maskConfig={maskConfig}
-        variant={variant}
         onValueChange={onValueChange}
         classNames={{
           ...classNames,
@@ -107,7 +104,6 @@ export const Input: React.FC<InputProps> = ({
 
   return (
     <NextInput
-      variant={variant}
       name={name}
       label={label}
       placeholder={placeholder}

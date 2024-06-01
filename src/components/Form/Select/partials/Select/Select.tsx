@@ -32,7 +32,7 @@ export interface SelectProps
   extends Omit<NextSelectProps, "children" | "onChange"> {
   name: string;
   label: string;
-  track: Track;
+  track?: Track;
   placeholder?: string;
   mask?: string;
   multiple?: boolean;
@@ -60,10 +60,10 @@ export const Select: React.FC<SelectProps> = ({
   disabled = false,
   value,
   classNames,
-  variant = "bordered",
+  errorMessage,
   ...props
 }) => {
-  const selectName = name + "_select";
+  const selectName = name + "_" + track.key;
   const [optionsMap, setOptionsMap] = useState<any>({});
 
   const optionsRef = useRef<SelectOptions>([]);
@@ -92,8 +92,9 @@ export const Select: React.FC<SelectProps> = ({
       <NextSelect
         required={required}
         name={selectName}
-        variant={variant}
         value={value}
+        isInvalid={Boolean(errorMessage)}
+        errorMessage={errorMessage}
         startContent={!startAdornment ? undefined : <>{startAdornment}</>}
         selectedKeys={value ? [String(value)] : undefined}
         onChange={handleChange}

@@ -49,7 +49,6 @@ export const useApiMutate = <Param, Response>({
     if (!paramsSchema) return apiRequest(body);
 
     const safeParams = paramsSchema.safeParse(body);
-    console.log({ safeParams });
 
     if (safeParams.success) {
       return apiRequest(body);
