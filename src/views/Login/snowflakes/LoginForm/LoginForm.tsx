@@ -5,9 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Form, TextField, Checkbox } from "components";
 import { tokenStorage } from "services";
-import { useUserContext } from "hooks";
 import { usePostLogin, loginFormSchema, LoginFormDto } from "views/Login/api";
-import { useEffect } from "react";
+import { useUserContext } from "core";
 
 export function LoginForm() {
   const navigate = useNavigate();

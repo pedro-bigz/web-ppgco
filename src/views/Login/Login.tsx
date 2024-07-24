@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Spinner } from "@nextui-org/react";
 import { Typography } from "@mui/material";
 
-import { useCheckToken } from "hooks";
+import { useCheckToken } from "core";
 import { LogoUFU45 } from "assets";
 import { LoginForm } from "./snowflakes";
 

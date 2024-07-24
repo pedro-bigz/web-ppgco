@@ -1,33 +1,38 @@
+import { useLocation, useNavigate } from "react-router-dom";
+import { Button, Card, CardBody } from "@nextui-org/react";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button, Card, CardBody } from "@nextui-org/react";
-import { FilterIcon, PlusIcon } from "assets";
-import { useListingContext } from "hooks";
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { numberFormat } from "utils";
-import { FilterModal } from "../FilterModal";
+import { useListingContext } from "core";
+import { handleClick, numberFormat } from "utils";
+import { FilterPopover } from "../FilterModal";
 
 export interface ListingTitleProps {
   title: string;
+  hideFilters?: boolean;
+  hideCreateButton?: boolean;
+  columns: { key: string; label: string; type: string }[];
 }
 
-export const ListingHeader = ({ title }: ListingTitleProps) => {
+export function ListingHeader({
+  title,
+  columns,
+  hideFilters,
+  hideCreateButton,
+}: ListingTitleProps) {
   const navigate = useNavigate();
+
   const { pathname } = useLocation();
-  const { totalItems } = useListingContext();
-
-  const [isOpenFilters, setIsOpenFilters] = useState<boolean>(false);
-
-  // const goTo = (url: string) => () => navigate(url);
-  const goToRegister = () => navigate(pathname + "/cadastrar");
-  const handleOnFilterStateChange = () => {
-    setIsOpenFilters(!isOpenFilters);
-  };
+  const {
+    numFilters,
+    filters,
+    totalItems,
+    setFilters,
+    saveFilters,
+    resetSavedFilters,
+  } = useListingContext();
 
   return (
     <>
-      <FilterModal isOpen={isOpenFilters} onOpenChange={setIsOpenFilters} />
       <Card className="mb-5">
         <CardBody className="px-5">
           <div className="flex justify-between">
@@ -38,30 +43,41 @@ export const ListingHeader = ({ title }: ListingTitleProps) => {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <Button
-                onClick={handleOnFilterStateChange}
-                radius="full"
-                variant="bordered"
-                color="primary"
-                className="px-5 font-bold font-sfPro"
-                startContent={<FilterIcon color="text-primary" />}
-              >
-                Filtrar
-              </Button>
-              <Button
-                onClick={goToRegister}
-                radius="full"
-                variant="solid"
-                color="primary"
-                className="px-5 font-bold font-sfPro"
-                startContent={<FontAwesomeIcon icon={faPlus} />}
-              >
-                Cadastrar
-              </Button>
+              {!hideFilters && (
+                <FilterPopover
+                  label={
+                    numFilters < 1
+                      ? "Filtrar"
+                      : `${numFilters} Filtro(s) aplicados`
+                  }
+                  defaultFilters={filters}
+                  columns={columns}
+                  onSave={saveFilters}
+                  onReset={resetSavedFilters}
+                  onFilter={setFilters}
+                  buttonProps={{
+                    color: numFilters < 1 ? "default" : "primary",
+                    className:
+                      numFilters < 1 ? "border-black" : "border-primary",
+                  }}
+                />
+              )}
+              {!hideCreateButton && (
+                <Button
+                  onClick={handleClick(navigate, pathname + "/cadastrar")}
+                  radius="full"
+                  variant="solid"
+                  color="primary"
+                  className="px-5 font-bold font-sfPro"
+                  startContent={<FontAwesomeIcon icon={faPlus} />}
+                >
+                  Cadastrar
+                </Button>
+              )}
             </div>
           </div>
         </CardBody>
       </Card>
     </>
   );
-};
+}

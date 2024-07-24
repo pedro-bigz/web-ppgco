@@ -31,7 +31,7 @@ interface UseDeleteSetterInterface {
   response?: Partial<AxiosResponse>;
 }
 
-export const useDeleteItems = ({ endpoint }: UseDeleteItemsParams) => {
+export function useDeleteItems({ endpoint }: UseDeleteItemsParams) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
@@ -113,4 +113,4 @@ export const useDeleteItems = ({ endpoint }: UseDeleteItemsParams) => {
         });
     },
   };
-};
+}

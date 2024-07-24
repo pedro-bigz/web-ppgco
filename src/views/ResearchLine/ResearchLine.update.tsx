@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { ResearchLineForm } from "./snowflakes";
-import { useID } from "hooks";
+import { useID } from "core";
 // import { isValidDate, toIsoString } from "utils";
 
 const schema = z.object({
@@ -8,6 +8,6 @@ const schema = z.object({
   description: z.string().optional(),
 });
 
-export const ResearchLineUpdatePage = () => {
+export function ResearchLineUpdatePage() {
   return <ResearchLineForm researchLineId={useID()} schema={schema} />;
-};
+}

@@ -6,17 +6,15 @@ import {
   TableRow,
   TableCell,
   Spinner,
-  Card,
-  CardBody,
 } from "@nextui-org/react";
 import _isEmpty from "lodash/isEmpty";
 import _get from "lodash/get";
 import classnames from "classnames";
 
 import { HeaderMenu } from "./HeaderMenu";
-import { TableFooter } from "./TableFooter";
 import { ActionsDropdown, ActionsItem } from "./ActionsDropdown";
 import { useTable } from "./useTable";
+import { ArrowSortIcon } from "./ArrowSortIcon";
 
 type Key = string | number;
 
@@ -52,8 +50,8 @@ export function Table({
   hasBulkSelection = false,
   isLoading = false,
   isRemoteData = true,
-  onSelectKeys,
   tableProps,
+  onSelectKeys,
 }: TableProps) {
   const {
     tableRef,
@@ -61,6 +59,9 @@ export function Table({
     selectedKeys,
     isMouseEnter,
     columnsWithActions,
+    isSorted,
+    getSortIcon,
+    getSortDirection,
     handleSort,
     handleMouseEnter,
     formatCellValue,
@@ -74,83 +75,83 @@ export function Table({
   });
 
   return (
-    <Card>
-      <CardBody className="p-4">
-        <NextTable
-          ref={tableRef}
-          isStriped
-          isHeaderSticky
-          showSelectionCheckboxes={hasBulkSelection}
-          aria-label="Controlled table example with dynamic content"
-          selectionMode="multiple"
-          selectedKeys={selectedKeys}
-          onSelectionChange={handleOnSelectionChange}
-          // bottomContent={}
-          classNames={{ wrapper: "next-table p-1 shadow-none", thead: "px-1" }}
-          {...tableProps}
-        >
-          <TableHeader>
-            {columnsWithActions.map((column) => (
-              <TableColumn
-                className={classnames(
-                  column.key === "actions" ? "sticky right-[-1rem] z-20" : "",
-                  "hover:bg-gray-200",
-                  "pr-0"
-                )}
-                key={column.key}
-                onMouseEnter={handleMouseEnter(column.key, true)}
-                onMouseLeave={handleMouseEnter(column.key, false)}
-                allowsSorting={column.sortable}
-              >
-                <div className="flex justify-between">
-                  <div className="flex items-center">{column.label}</div>
-                  {column.key !== "actions" && (
-                    <HeaderMenu
-                      column={column}
-                      onSort={handleSort}
-                      isVisible={isMouseEnter[column.key]}
-                      allowsSorting={column.sortable}
-                    />
-                  )}
-                </div>
-              </TableColumn>
-            ))}
-          </TableHeader>
-          <TableBody
-            isLoading={isLoading}
-            loadingContent={<Spinner label="Loading..." />}
-            emptyContent={
-              <div className="font-montserrat">Nenhum item encontrado!</div>
-            }
+    <NextTable
+      ref={tableRef}
+      isStriped
+      isHeaderSticky
+      showSelectionCheckboxes={hasBulkSelection}
+      aria-label="Controlled table example with dynamic content"
+      selectionMode="multiple"
+      selectedKeys={selectedKeys}
+      onSelectionChange={handleOnSelectionChange}
+      classNames={{ wrapper: "next-table p-1 shadow-none", thead: "px-1" }}
+      {...tableProps}
+    >
+      <TableHeader>
+        {columnsWithActions.map((column) => (
+          <TableColumn
+            className={classnames(
+              column.key === "actions" ? "sticky right-[-1rem] z-20" : "",
+              "hover:bg-gray-200",
+              "pr-0"
+            )}
+            key={column.key}
+            onMouseEnter={handleMouseEnter(column.key, true)}
+            onMouseLeave={handleMouseEnter(column.key, false)}
+            allowsSorting={column.sortable}
           >
-            {rows.map((item) => (
-              <TableRow key={item[rowKey] as Key}>
-                {(columnKey) =>
-                  actions && !_isEmpty(actions) && columnKey === "actions" ? (
-                    <TableCell
-                      className={classnames(
-                        "sticky bg-transparent z-[99] p-0",
-                        { "right-[-4px]": !isEndTable }
-                      )}
-                    >
-                      <ActionsDropdown
-                        actions={actions}
-                        item={item}
-                        isEndTable={isEndTable}
-                      />
-                    </TableCell>
-                  ) : (
-                    <TableCell>
-                      {formatCellValue(_get(item, columnKey))}
-                    </TableCell>
-                  )
-                }
-              </TableRow>
-            ))}
-          </TableBody>
-        </NextTable>
-        <TableFooter className="mt-3" />
-      </CardBody>
-    </Card>
+            <div className="flex justify-between">
+              <div className="flex items-center">{column.label}</div>
+              {isSorted(column) && (
+                <ArrowSortIcon
+                  column={column}
+                  onSort={handleSort}
+                  direction={getSortDirection(column)}
+                  icon={getSortIcon(column)}
+                />
+              )}
+              {column.key !== "actions" && (
+                <HeaderMenu
+                  column={column}
+                  onSort={handleSort}
+                  isVisible={isMouseEnter[column.key]}
+                  allowsSorting={column.sortable}
+                />
+              )}
+            </div>
+          </TableColumn>
+        ))}
+      </TableHeader>
+      <TableBody
+        isLoading={isLoading}
+        loadingContent={<Spinner label="Loading..." />}
+        emptyContent={
+          <div className="font-montserrat">Nenhum item encontrado!</div>
+        }
+      >
+        {rows.map((item) => (
+          <TableRow key={item[rowKey] as Key}>
+            {(columnKey) =>
+              actions && !_isEmpty(actions) && columnKey === "actions" ? (
+                <TableCell
+                  className={classnames(
+                    "sticky bg-transparent z-[99] p-0 flex justify-end",
+                    { "right-[-4px]": !isEndTable }
+                  )}
+                >
+                  <ActionsDropdown
+                    actions={actions}
+                    item={item}
+                    isEndTable={isEndTable}
+                  />
+                </TableCell>
+              ) : (
+                <TableCell>{formatCellValue(_get(item, columnKey))}</TableCell>
+              )
+            }
+          </TableRow>
+        ))}
+      </TableBody>
+    </NextTable>
   );
 }

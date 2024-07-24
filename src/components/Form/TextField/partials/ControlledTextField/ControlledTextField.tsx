@@ -1,7 +1,10 @@
-import { Input, InputProps } from "../Input";
+import { useEffect, useRef } from "react";
 import { useController, useFormContext } from "react-hook-form";
 import classnames from "classnames";
-import { useEffect, useRef } from "react";
+import _get from "lodash/get";
+import _isEmpty from "lodash/isEmpty";
+
+import { Input, InputProps } from "../Input";
 
 export interface ControlledTextFieldProps
   extends Omit<InputProps, "onChange" | "onValueChange" | "value"> {
@@ -11,8 +14,6 @@ export interface ControlledTextFieldProps
   placeholder?: string;
   mask?: string | any;
   maskConfig?: any;
-  required?: boolean;
-  disabled?: boolean;
   startAdornment?: JSX.Element | string;
   endAdornment?: JSX.Element | string;
   maxLength?: number;
@@ -22,7 +23,7 @@ export interface ControlledTextFieldProps
   onChange?: (...e: any[]) => void;
 }
 
-export const ControlledTextField: React.FC<ControlledTextFieldProps> = ({
+export function ControlledTextField({
   name,
   isHidden = false,
   isPassword = false,
@@ -30,8 +31,6 @@ export const ControlledTextField: React.FC<ControlledTextFieldProps> = ({
   placeholder,
   mask,
   maskConfig,
-  required,
-  disabled,
   maxLength = 255,
   size = "sm",
   label = "",
@@ -40,14 +39,19 @@ export const ControlledTextField: React.FC<ControlledTextFieldProps> = ({
   position,
   onChange,
   ...props
-}) => {
+}: ControlledTextFieldProps) {
   const { control } = useFormContext();
   const { field, formState } = useController({
     name,
     control,
     defaultValue,
   });
-  const error = formState.errors[name];
+  const error = _get(formState.errors, name);
+
+  useEffect(() => {
+    if (_isEmpty(formState.errors)) return;
+    console.log({ errors: formState.errors });
+  }, [formState.errors]);
 
   const onInputChange = (...e: any[]) => {
     onChange?.(field, ...e);
@@ -79,8 +83,6 @@ export const ControlledTextField: React.FC<ControlledTextFieldProps> = ({
       size={size}
       onChange={onInputChange}
       onValueChange={onInputChange}
-      isDisabled={disabled}
-      isRequired={required}
       errorMessage={error?.message as string}
       maxLength={maxLength}
       isHidden={isHidden}
@@ -91,4 +93,4 @@ export const ControlledTextField: React.FC<ControlledTextFieldProps> = ({
       isInvalid={Boolean(error?.message)}
     />
   );
-};
+}

@@ -9,19 +9,21 @@ interface CheckboxProps extends NextCheckboxProps {
   label?: string;
 }
 
-export const Checkbox: React.FC<CheckboxProps> = ({
+export function Checkbox({
   name,
   label,
   onChange,
   defaultSelected,
   ...props
-}) => {
+}: CheckboxProps) {
   const { control } = useFormContext();
   const { field } = useController({
     name,
     control,
     defaultValue: !!defaultSelected,
   });
+
+  // useEffect(() => {}, []);
 
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     field.onChange(Boolean((event.target as HTMLInputElement).checked));
@@ -33,10 +35,11 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       {...props}
       aria-labelledby="controlled-radio-buttons-group"
       value={field.value}
+      isSelected={field.value}
       onChange={handleOnChange}
       defaultSelected={defaultSelected}
     >
       {label}
     </NextCheckbox>
   );
-};
+}

@@ -2,8 +2,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@nextui-org/react";
 import { TrashIcon } from "assets";
-import { TextArea, TextField } from "components";
-import { FieldArray } from "components/Form/FieldArray";
+import { TextField } from "components";
 import { useEffect } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 
@@ -11,7 +10,7 @@ interface ProjectFieldArrayProps {
   className: string;
 }
 
-export const ProjectFieldArray = ({ className }: ProjectFieldArrayProps) => {
+export function ProjectFieldArray({ className }: ProjectFieldArrayProps) {
   const { control, watch } = useFormContext();
   const { fields, append, remove } = useFieldArray({
     control,
@@ -90,4 +89,4 @@ export const ProjectFieldArray = ({ className }: ProjectFieldArrayProps) => {
       ))}
     </div>
   );
-};
+}

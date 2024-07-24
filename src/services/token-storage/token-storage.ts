@@ -1,4 +1,5 @@
-import { axiosMain } from "core";
+import { axiosMain, dayjs, DecodedToken } from "core";
+import jwtDecode from "jwt-decode";
 
 const defaultStorage = localStorage;
 const token_name = "ppgco-access-token";
@@ -8,6 +9,9 @@ const keep_connected_name = "ppgco-keep-connected";
 export const tokenStorage = {
   getToken() {
     return defaultStorage.getItem(token_name);
+  },
+  getAuthorization() {
+    return `Bearer ${defaultStorage.getItem(token_name)}`;
   },
   hasToken() {
     return !!defaultStorage.getItem(token_name);
@@ -44,7 +48,19 @@ export const tokenStorage = {
   clear() {
     defaultStorage.clear();
   },
+  isExpired() {
+    const token = tokenStorage.getToken();
+
+    if (!token) return;
+
+    const decodedToken = jwtDecode<DecodedToken>(token);
+    const expirationDate = dayjs(decodedToken.exp * 1000);
+
+    return expirationDate.isBefore(dayjs());
+  },
   async isValidToken() {
+    console.log("isValidToken");
+
     return new Promise<boolean>((resolve) => {
       axiosMain
         .head("auth/check-token")

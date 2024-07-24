@@ -16,11 +16,7 @@ interface RadioGroupProps extends NextRadioGroupProps {
   options: RadioGroupOption[];
 }
 
-export const RadioGroup: React.FC<RadioGroupProps> = ({
-  name,
-  options,
-  ...props
-}) => {
+export function RadioGroup({ name, options, ...props }: RadioGroupProps) {
   const { control } = useFormContext();
   const {
     field,
@@ -48,4 +44,4 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
       <ErrorMessage>{errors[name]?.message as string}</ErrorMessage>
     </Container>
   );
-};
+}

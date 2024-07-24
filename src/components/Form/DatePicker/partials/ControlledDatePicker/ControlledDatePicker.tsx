@@ -10,14 +10,14 @@ export interface ControlledDatePickerProps extends DatePickerProps {
   onFieldChange?: (...e: any[]) => void;
 }
 
-export const ControlledDatePicker = ({
+export function ControlledDatePicker({
   name,
   defaultValue,
   onChange,
   onFieldChange,
   size = "sm",
   ...props
-}: ControlledDatePickerProps) => {
+}: ControlledDatePickerProps) {
   const pickerName = name + "_picker";
 
   const { control, setValue } = useFormContext();
@@ -51,4 +51,4 @@ export const ControlledDatePicker = ({
       />
     </>
   );
-};
+}

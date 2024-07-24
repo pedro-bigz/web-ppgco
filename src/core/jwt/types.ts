@@ -2,7 +2,7 @@ import * as z from "zod";
 import { AxiosRequestConfig } from "axios";
 
 export interface TypeDefaultApiParams {
-  instance?: "igreen";
+  instance?: "main" | "auth";
   endpoint: string;
   body?: AxiosRequestConfig;
   paramsSchema?: z.ZodTypeAny;

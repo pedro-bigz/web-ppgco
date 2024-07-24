@@ -7,6 +7,6 @@ const schema = z.object({
   description: z.string().optional(),
 });
 
-export const ResearchLineCreatePage = () => {
+export function ResearchLineCreatePage() {
   return <ResearchLineForm schema={schema} />;
-};
+}

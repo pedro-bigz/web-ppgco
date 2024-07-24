@@ -1,9 +1,8 @@
 import toast from "react-hot-toast";
-import axios from "axios";
 import z from "zod";
 
-import { API_PPGCO_URL } from "core";
 import { tokenStorage } from "services";
+import { axiosAuth } from "./auth.api";
 
 const refreshTokenSchema = z.object({
   auth: z.object({
@@ -14,23 +13,18 @@ const refreshTokenSchema = z.object({
 
 export type TypeRefreshToken = z.infer<typeof refreshTokenSchema>;
 
-export const refreshTokenApi = (refreshToken: string) =>
+export const refreshTokenApi = (refreshToken: string, headers: Headers) =>
   new Promise((resolve, reject) => {
-    axios
+    axiosAuth
       .post<any, TypeRefreshToken>(
-        `${API_PPGCO_URL}/auth/refresh-token`,
-        {
-          refreshToken,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${tokenStorage.getToken()}`,
-          },
-        }
+        "/refresh-token",
+        { refreshToken },
+        { headers: Object.fromEntries(headers.entries()) }
       )
       .then(({ data }: any) => {
         tokenStorage.setToken(data.auth.accessToken);
+        headers.append("Authorization", tokenStorage.getAuthorization());
+
         resolve(data);
       })
       .catch((error) => {

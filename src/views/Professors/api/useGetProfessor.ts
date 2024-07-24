@@ -1,9 +1,9 @@
-import { useApiQuery } from "hooks";
+import { useApiQuery } from "core";
 
-export const useGetProfessor = (professorId?: string) => {
+export function useGetProfessor(professorId?: string) {
   return useApiQuery({
     endpoint: "/advisors/" + professorId,
     options: { enabled: Boolean(professorId) },
     queryKey: ["advisors", String(professorId)],
   });
-};
+}

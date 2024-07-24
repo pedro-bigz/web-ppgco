@@ -1,13 +1,13 @@
-import { useApiQuery } from "hooks";
+import { useApiQuery } from "core";
 
 export interface UseGetStudentParams {
   studentId?: string;
 }
 
-export const useGetStudent = (studentId?: string) => {
+export function useGetStudent(studentId?: string) {
   return useApiQuery({
-    endpoint: "/student/" + studentId,
+    endpoint: "/students/" + studentId,
     options: { enabled: Boolean(studentId) },
-    queryKey: ["student", String(studentId)],
+    queryKey: ["students", String(studentId)],
   });
-};
+}

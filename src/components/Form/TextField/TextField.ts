@@ -23,4 +23,9 @@ export type {
   UncontrolledTextFieldProps,
 };
 
-export { ControlledTextField as default, TextField };
+export {
+  ControlledTextField as default,
+  TextField,
+  ControlledTextField,
+  UncontrolledTextField,
+};

@@ -6,10 +6,6 @@ interface HiddenInputProps {
   value: any;
 }
 
-export const HiddenInput: React.FC<HiddenInputProps> = ({
-  name,
-  onChange,
-  value,
-}) => {
+export function HiddenInput({ name, value, onChange }: HiddenInputProps) {
   return <input type="hidden" name={name} onChange={onChange} value={value} />;
-};
+}

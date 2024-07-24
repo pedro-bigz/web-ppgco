@@ -1,4 +1,4 @@
-import { useApiQuery } from "hooks";
+import { useApiQuery } from "core";
 
 export function useGetResearchLine(researchLineId?: string) {
   return useApiQuery({

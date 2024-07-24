@@ -1,4 +1,4 @@
-import { useNavigationStore } from "hooks";
+import { useNavigationStore } from "core";
 
 export type DropdownItemData = {
   key: string;

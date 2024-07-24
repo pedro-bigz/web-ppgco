@@ -3,6 +3,7 @@ import {
   Input as NextInput,
   InputProps as NextInputProps,
 } from "@nextui-org/react";
+import { useEffect, useRef } from "react";
 
 export interface MaskedInputProps extends NextInputProps {
   name: string;
@@ -20,7 +21,7 @@ export interface MaskedInputProps extends NextInputProps {
   onValueChange: (...event: any[]) => void;
 }
 
-export const MaskedInput: React.FC<MaskedInputProps> = ({
+export function MaskedInput({
   name,
   value,
   errorMessage,
@@ -34,7 +35,7 @@ export const MaskedInput: React.FC<MaskedInputProps> = ({
   label = "",
   onValueChange,
   ...props
-}) => {
+}: MaskedInputProps) {
   const { ref, maskRef }: any = useIMask(
     {
       mask,
@@ -73,6 +74,19 @@ export const MaskedInput: React.FC<MaskedInputProps> = ({
   const updateValue = () => {
     maskRef.current.updateValue();
   };
+
+  const hasInitRef = useRef(false);
+  useEffect(() => {
+    if (!maskRef.current || hasInitRef.current || !value) {
+      return;
+    }
+
+    maskRef.current.value = value;
+    maskRef.current.updateValue();
+
+    hasInitRef.current = true;
+  }, [maskRef, value]);
+
   return (
     <NextInput
       {...props}
@@ -82,6 +96,7 @@ export const MaskedInput: React.FC<MaskedInputProps> = ({
       value={value}
       ref={ref}
       size={size}
+      onLoad={updateValue}
       onBlur={updateValue}
       isDisabled={disabled}
       isRequired={required}
@@ -89,4 +104,4 @@ export const MaskedInput: React.FC<MaskedInputProps> = ({
       maxLength={maxLength}
     />
   );
-};
+}

@@ -7,7 +7,7 @@ export interface UseBulkSelectionParams {
   onSelectKeys?: (keys: Set<Key>) => void;
 }
 
-export const useBulkSelection = ({ onSelectKeys }: UseBulkSelectionParams) => {
+export function useBulkSelection({ onSelectKeys }: UseBulkSelectionParams) {
   const [selectedKeys, setSelectedKeys] = useState<Set<Key>>(new Set([]));
 
   const handleOnSelectionChange = (keys: Selection) => {
@@ -16,4 +16,4 @@ export const useBulkSelection = ({ onSelectKeys }: UseBulkSelectionParams) => {
   };
 
   return { selectedKeys, setSelectedKeys, handleOnSelectionChange };
-};
+}

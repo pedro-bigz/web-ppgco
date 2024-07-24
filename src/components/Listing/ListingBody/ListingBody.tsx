@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { ConfirmationModal } from "components/ConfirmationModal";
@@ -10,9 +10,9 @@ import {
 } from "../Table";
 import { useDeleteItems, DeleteApiCallbacks } from "./useDeleteItems";
 import { useListing } from "./useListing";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-import { EditIcon, TrashBIcon, TrashIcon } from "assets";
+import { EditIcon, TrashBIcon } from "assets";
+import { Card, CardBody } from "@nextui-org/react";
+import { ListingBodyFooter } from "./ListingBodyFooter";
 
 export interface ListingBodyInterface {
   track?: {
@@ -22,10 +22,12 @@ export interface ListingBodyInterface {
   actions?: ActionsItem[];
   endpoint: string;
   columns: TableColumnAttributes[];
+  showFooter?: boolean;
+  showPerPageSelect?: boolean;
   onDeleteCallbacks?: DeleteApiCallbacks;
 }
 
-export const ListingBody = ({
+export function ListingBody({
   endpoint,
   columns,
   actions,
@@ -33,8 +35,10 @@ export const ListingBody = ({
     key: "id",
     label: "name",
   },
+  showFooter = true,
+  showPerPageSelect = true,
   onDeleteCallbacks,
-}: ListingBodyInterface) => {
+}: ListingBodyInterface) {
   const navigate = useNavigate();
 
   const { data, isLoading, removeItem } = useListing({ endpoint });
@@ -89,32 +93,46 @@ export const ListingBody = ({
         onAccept={onDelete}
         onReject={console.log}
       />
-      <Table
-        rowKey={track.key}
-        rows={data as TableRowInterface[]}
-        columns={columns}
-        isLoading={isLoading}
-        actions={[
-          {
-            label: "Editar",
-            className: "text-primary text-lg font-bold font-nexa",
-            icon: () => <EditIcon className="mx-2" width={14} height={14} />,
-            onClick(item: TableRowInterface) {
-              navigate(`${pathname}/${item[track.key]}/editar`);
-            },
-          },
-          {
-            label: "Deletar",
-            className: "text-danger text-lg font-bold font-nexa",
-            icon: () => <TrashBIcon className="mx-2" width={13} height={17} />,
-            onClick(item: TableRowInterface) {
-              setItem(item);
-              setIsShownConfirmation(true);
-            },
-          },
-          ...(actions ?? []),
-        ]}
-      />
+      <Card>
+        <CardBody className="p-4">
+          <Table
+            rowKey={track.key}
+            rows={data as TableRowInterface[]}
+            columns={columns}
+            isLoading={isLoading}
+            actions={[
+              {
+                label: "Editar",
+                className: "text-primary text-lg font-bold font-nexa",
+                icon: () => (
+                  <EditIcon className="mx-2" width={14} height={14} />
+                ),
+                onClick(item: TableRowInterface) {
+                  navigate(`${pathname}/${item[track.key]}/editar`);
+                },
+              },
+              {
+                label: "Deletar",
+                className: "text-danger text-lg font-bold font-nexa",
+                icon: () => (
+                  <TrashBIcon className="mx-2" width={13} height={17} />
+                ),
+                onClick(item: TableRowInterface) {
+                  setItem(item);
+                  setIsShownConfirmation(true);
+                },
+              },
+              ...(actions ?? []),
+            ]}
+          />
+          {showFooter && (
+            <ListingBodyFooter
+              className="mt-3"
+              showPerPageSelect={showPerPageSelect}
+            />
+          )}
+        </CardBody>
+      </Card>
     </>
   );
-};
+}

@@ -1,25 +1,44 @@
-import { useUserApi } from "hooks";
-import {
-  createContext,
-  useState,
-  ReactNode,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-} from "react";
+import { createContext, useState, ReactNode, useEffect } from "react";
+import { useUserApi } from "core";
+import _isEmpty from "lodash/isEmpty";
+
+interface UserDataType {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  birth_date?: Date;
+  language: string;
+  created_at?: Date;
+  updated_at?: Date;
+  deleted_at?: Date | null;
+}
+
+interface WithRoles {
+  roles?: any[];
+}
+
+interface WithPermissions {
+  permissions?: string[];
+}
+
+export type ApiProfileResponse = UserDataType & WithPermissions & WithRoles;
 
 export type UserProviderValueInterface = {
-  user: Record<string, any>;
-  setUser: Dispatch<SetStateAction<Record<string, any>>>;
-  isLogged: boolean;
-  setIsLogged: Dispatch<SetStateAction<boolean>>;
+  user?: Record<string, any>;
+  roles: string[];
+  permissions: string[];
+  resetUser: () => void;
+  setUser: (data: ApiProfileResponse) => void;
 };
 
 const UserProviderDefaultValues = {
-  user: {},
+  user: undefined,
+  roles: [],
+  permissions: [],
   setUser: () => undefined,
-  isLogged: false,
-  setIsLogged: () => undefined,
+  resetUser: () => undefined,
 };
 
 export const UserContext = createContext<UserProviderValueInterface>(
@@ -30,26 +49,44 @@ type UserProviderProps = {
   children: ReactNode;
 };
 
-export const UserProvider = ({ children }: UserProviderProps) => {
-  const [isLogged, setIsLogged] = useState(UserProviderDefaultValues.isLogged);
-  const [user, setUser] = useState(UserProviderDefaultValues.user);
+export function UserProvider({ children }: UserProviderProps) {
+  const {
+    user: defaultUser,
+    roles: defaultRoles,
+    permissions: defaultPermissions,
+  } = UserProviderDefaultValues;
 
-  const { data } = useUserApi();
+  const [roles, setRoles] = useState<string[]>(defaultRoles);
+  const [permissions, setPermissions] = useState<string[]>(defaultPermissions);
+  const [user, setUserData] = useState<UserDataType | undefined>(defaultUser);
+
+  const { data } = useUserApi<ApiProfileResponse>();
+
+  const resetUser = () => setUserData(undefined);
+  const setUser = (data: ApiProfileResponse) => {
+    const { permissions, roles, ...userData } = data;
+
+    setUserData(userData);
+    setRoles(roles ?? []);
+    setPermissions(permissions ?? []);
+  };
 
   useEffect(() => {
-    setUser(data as Record<string, any>);
+    if (!data) return;
+    setUser(data);
   }, [data]);
 
   return (
     <UserContext.Provider
       value={{
         user,
-        isLogged,
+        roles,
+        permissions,
         setUser,
-        setIsLogged,
+        resetUser,
       }}
     >
       {children}
     </UserContext.Provider>
   );
-};
+}

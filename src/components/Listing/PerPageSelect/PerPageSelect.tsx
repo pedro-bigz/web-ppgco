@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Select, SelectItem, Selection } from "@nextui-org/react";
 import _isEmpty from "lodash/isEmpty";
 import { perPageItems, PerPageSelectionItems } from "./PerPageSelect.mock";
-import { useListingContext } from "hooks";
+import { useListingContext } from "core";
 
 interface PerPageSelectInterface {
   label?: string;
@@ -10,10 +10,10 @@ interface PerPageSelectInterface {
   defaultValue?: PerPageSelectionItems;
 }
 
-export const PerPageSelect = ({
+export function PerPageSelect({
   className,
   label = "",
-}: PerPageSelectInterface) => {
+}: PerPageSelectInterface) {
   const { perPage, setPerPage } = useListingContext();
   const [selectedKeys, setSelectedKeys] = useState<Selection>();
 
@@ -59,4 +59,4 @@ export const PerPageSelect = ({
       </Select>
     </div>
   );
-};
+}

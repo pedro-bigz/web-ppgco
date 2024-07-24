@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { SubjectsForm } from "./snowflakes";
-import { useID } from "hooks";
+import { useID } from "core";
 
 const schema = z.object({
   code: z.string(),
@@ -16,6 +16,6 @@ const schema = z.object({
   course_id: z.string().transform((num) => +num),
 });
 
-export const SubjectsUpdatePage = () => {
+export function SubjectsUpdatePage() {
   return <SubjectsForm subjectId={useID()} schema={schema} />;
-};
+}

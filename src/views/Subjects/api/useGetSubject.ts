@@ -1,9 +1,9 @@
-import { useApiQuery } from "hooks";
+import { useApiQuery } from "core";
 
-export const useGetSubject = (subjectId?: string) => {
+export function useGetSubject(subjectId?: string) {
   return useApiQuery({
     endpoint: "/subjects/" + subjectId,
     options: { enabled: Boolean(subjectId) },
     queryKey: ["subjects", String(subjectId)],
   });
-};
+}

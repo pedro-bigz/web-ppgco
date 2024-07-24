@@ -1,29 +1,23 @@
-import { ChangeEvent, Key, useRef } from "react";
-import {
-  Autocomplete,
-  AutocompleteItem,
-  AutocompleteProps,
-} from "@nextui-org/react";
+import { ChangeEvent, useRef } from "react";
+import { Select, SelectItem, SelectProps, Selection } from "@nextui-org/react";
 import _get from "lodash/get";
 import _isEqual from "lodash/isEqual";
 import _mapKeys from "lodash/mapKeys";
+
+import {
+  useAsyncLoading,
+  Track,
+  SelectOption,
+  SelectOnChangeAttributes,
+} from "core";
 import classnames from "classnames";
 
-import { useAsyncSelect } from "./useAsyncSelect";
-import { SelectOption, Track } from "components/Form/Select";
-import { OptionKey } from "./useSelectOptions";
-
-export interface OnChangeAttributes {
-  e: ChangeEvent<HTMLSelectElement | HTMLInputElement>;
-  option: SelectOption;
-}
-
 export interface AsyncSelectOnChangeHandler {
-  (props: OnChangeAttributes): void;
+  (props: SelectOnChangeAttributes): void;
 }
 
 export interface AsyncSelectProps
-  extends Omit<AutocompleteProps, "onChange" | "children"> {
+  extends Omit<SelectProps, "onChange" | "children"> {
   endpoint: string;
   perPage?: number;
   name: string;
@@ -39,7 +33,7 @@ export interface AsyncSelectProps
   defaultValue?: string;
 }
 
-export const AsyncSelect: React.FC<AsyncSelectProps> = ({
+export function AsyncSelect({
   endpoint,
   perPage = 10,
   name,
@@ -50,35 +44,30 @@ export const AsyncSelect: React.FC<AsyncSelectProps> = ({
   },
   size = "sm",
   required,
+  multiple,
   startAdornment,
   onChange,
   value,
-  inputProps,
   errorMessage,
+  classNames,
   ...props
-}) => {
-  const autocompleteRef = useRef<HTMLInputElement>(null);
+}: AsyncSelectProps) {
+  const autocompleteRef = useRef<HTMLSelectElement>(null);
   const {
-    search,
     options,
     isLoading,
     scrollerRef,
     getOption,
-    onSearch,
     setSelected,
     onOpenChange,
-  } = useAsyncSelect({
+  } = useAsyncLoading({
     endpoint,
     perPage,
     track,
   });
 
-  const emitOnChange = (key: OptionKey | null) => {
-    const option = getOption(key as string);
-
-    if (!option) {
-      return console.error("AsyncSelect item not founded");
-    }
+  const emitOnChange = (keys: Selection) => {
+    const options = [...keys].map(getOption);
 
     const autocompleteRefProp = autocompleteRef?.current ?? {};
 
@@ -86,57 +75,58 @@ export const AsyncSelect: React.FC<AsyncSelectProps> = ({
       target: {
         ...autocompleteRefProp,
         name,
-        value: String(key),
+        value: String([...keys]),
       },
-    } as ChangeEvent<HTMLInputElement>;
+    } as ChangeEvent<HTMLSelectElement>;
 
-    onChange?.({ e, option });
+    if (!options) {
+      if (!required) onChange?.({ e });
+      else console.error("AsyncSelect item not founded");
+    }
+
+    onChange?.({ e, options, keys });
   };
 
-  const handleSelectionChange = (key: OptionKey | null) => {
+  const handleSelectionChange = (key: Selection) => {
     setSelected(key);
     emitOnChange(key);
   };
 
   return (
-    <Autocomplete
+    <Select
       ref={autocompleteRef}
       required={required}
       name={name}
       label={label}
       value={value}
       startContent={!startAdornment ? undefined : <>{startAdornment}</>}
-      selectedKey={value ? String(value) : undefined}
+      selectedKeys={value ? String(value) : undefined}
       onOpenChange={onOpenChange}
       scrollRef={scrollerRef}
       fullWidth
       size={size}
+      selectionMode={multiple ? "multiple" : "single"}
       isLoading={isLoading}
       isInvalid={Boolean(errorMessage)}
       errorMessage={errorMessage}
-      inputValue={search}
-      onInputChange={onSearch}
       onSelectionChange={handleSelectionChange}
-      inputProps={{
-        ...inputProps,
-        classNames: {
-          inputWrapper: classnames(
-            "border-small",
-            inputProps?.classNames?.inputWrapper
-          ),
-          ...inputProps?.classNames,
-        },
+      classNames={{
+        ...classNames,
+        trigger: classnames(
+          "border-small border-[#DEDEDE!important]",
+          classNames?.trigger
+        ),
       }}
       {...props}
     >
       {options.map((option: SelectOption) => {
         const itemKey = _get(option, track.key) as string;
         return (
-          <AutocompleteItem key={itemKey} value={itemKey}>
+          <SelectItem key={itemKey} value={itemKey}>
             {_get(option, track.label) as string}
-          </AutocompleteItem>
+          </SelectItem>
         );
       })}
-    </Autocomplete>
+    </Select>
   );
-};
+}

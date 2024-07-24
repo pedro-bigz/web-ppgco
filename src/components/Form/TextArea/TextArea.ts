@@ -20,4 +20,9 @@ export type {
   ControlledTextAreaProps,
   UncontrolledTextAreaProps,
 };
-export { ControlledTextArea as default, TextArea };
+export {
+  ControlledTextArea as default,
+  TextArea,
+  ControlledTextArea,
+  UncontrolledTextArea,
+};

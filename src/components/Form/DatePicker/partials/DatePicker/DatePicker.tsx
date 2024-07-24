@@ -10,12 +10,12 @@ export interface DatePickerProps extends NextDatePickerProps {
   name: string;
 }
 
-export const DatePicker = ({
+export function DatePicker({
   classNames,
   errorMessage,
   onChange,
   ...props
-}: DatePickerProps) => {
+}: DatePickerProps) {
   // const formatter = useDateFormatter({ dateStyle: "full" });
 
   const handleChange = (date: DateValue) => {
@@ -43,4 +43,4 @@ export const DatePicker = ({
       />
     </I18nProvider>
   );
-};
+}

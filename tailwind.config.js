@@ -21,6 +21,7 @@ export default {
     },
     extend: {
       colors: {
+        red: "#ff0000",
         green: "#00B22A",
         blue: "#0e4097",
       },
@@ -30,6 +31,8 @@ export default {
         sfProDisplay: ["SF Pro Display", "sans-serif"],
         abrosans: ["AbroSans", "sans-serif"],
         montserrat: ["Montserrat", "sans-serif"],
+        bonanovasc: ["BonaNovaSC", "sans-serif"],
+        wittgenstein: ["Wittgenstein", "sans-serif"],
       },
       boxShadow: {
         leftShadow: "",

@@ -8,10 +8,10 @@ export interface ResearchLineFormProps {
   schema: ZodSchema;
 }
 
-export const ResearchLineForm = ({
+export function ResearchLineForm({
   researchLineId,
   schema,
-}: ResearchLineFormProps) => {
+}: ResearchLineFormProps) {
   return (
     <DynamicForm
       hasAutoToasts
@@ -44,4 +44,4 @@ export const ResearchLineForm = ({
       </div>
     </DynamicForm>
   );
-};
+}

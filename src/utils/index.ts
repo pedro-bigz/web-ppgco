@@ -7,3 +7,5 @@ export * from "./strings";
 export * from "./debug";
 export * from "./forms";
 export * from "./events";
+export * from "./colors";
+export * from "./functions";

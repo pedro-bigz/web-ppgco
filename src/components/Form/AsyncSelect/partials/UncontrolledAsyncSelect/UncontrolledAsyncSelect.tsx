@@ -2,9 +2,9 @@ import { AsyncSelect, AsyncSelectProps } from "../AsyncSelect";
 
 export interface UncontrolledAsyncSelectProps extends AsyncSelectProps {}
 
-export const UncontrolledAsyncSelect = ({
+export function UncontrolledAsyncSelect({
   name,
   ...props
-}: UncontrolledAsyncSelectProps) => {
+}: UncontrolledAsyncSelectProps) {
   return <AsyncSelect {...props} name={name} />;
-};
+}

@@ -1,4 +1,4 @@
-import { useApiMutate } from "hooks/api";
+import { useApiMutate } from "core/hooks/api";
 import {
   LoginFormDto,
   LoginFormResponseDto,
@@ -7,7 +7,8 @@ import {
 
 export function usePostLogin() {
   return useApiMutate<LoginFormDto, LoginFormResponseDto>({
-    endpoint: "/auth/login",
+    instance: "auth",
+    endpoint: "/login",
     paramsSchema: loginFormSchema,
     message: {
       error: "Acesso não autorizado.",

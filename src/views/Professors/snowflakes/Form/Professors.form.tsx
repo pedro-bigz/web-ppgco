@@ -3,14 +3,14 @@ import { ZodSchema } from "zod";
 import _trimEnd from "lodash/trimEnd";
 
 import {
-  AsyncSelect,
+  AsyncAutocomplete,
   CardForm,
   DatePicker,
   resolveEndpoint,
   TextField,
 } from "components";
 import { useGetProfessor } from "views/Professors/api";
-import { useCustomForm } from "hooks";
+import { useCustomForm } from "core";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMemo } from "react";
 import { parseDate } from "@internationalized/date";
@@ -20,7 +20,7 @@ export interface ProfessorFormProps {
   schema: ZodSchema;
 }
 
-export const ProfessorForm = ({ professorId, schema }: ProfessorFormProps) => {
+export function ProfessorForm({ professorId, schema }: ProfessorFormProps) {
   const endpoint = resolveEndpoint("/advisors", professorId);
   const method = !professorId ? "post" : "patch";
 
@@ -36,9 +36,9 @@ export const ProfessorForm = ({ professorId, schema }: ProfessorFormProps) => {
         }
       : {};
   }, [professor]);
+
   const { onSubmit, handleOnSubmit, ...formProps } = useCustomForm(
-    endpoint,
-    method,
+    { endpoint, method },
     {
       resolver: zodResolver(schema),
       mode: "onSubmit",
@@ -47,7 +47,7 @@ export const ProfessorForm = ({ professorId, schema }: ProfessorFormProps) => {
     },
     {
       hasAutoToasts: true,
-      defaultValues,
+      reInitValues: defaultValues,
     }
   );
 
@@ -66,7 +66,7 @@ export const ProfessorForm = ({ professorId, schema }: ProfessorFormProps) => {
           <TextField.Form name="lattes" label="Lattes" />
         </div>
         <div className="flex flex-col gap-3">
-          <AsyncSelect.Form
+          <AsyncAutocomplete.Form
             name="research_line"
             label="Linha de Pesquisa"
             endpoint="research-lines"
@@ -77,7 +77,7 @@ export const ProfessorForm = ({ professorId, schema }: ProfessorFormProps) => {
           <DatePicker.Form name="birth_date" label="Data de Nascimento" />
           <TextField.Form
             mask={["(00) 0000-0000", "(00) 00000-0000"]}
-            name="fone"
+            name="phone"
             label="Telefone"
           />
         </div>
@@ -95,4 +95,4 @@ export const ProfessorForm = ({ professorId, schema }: ProfessorFormProps) => {
       </div>
     </CardForm>
   );
-};
+}

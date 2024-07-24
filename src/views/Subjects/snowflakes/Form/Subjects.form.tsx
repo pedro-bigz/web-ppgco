@@ -2,7 +2,7 @@ import { Button } from "@nextui-org/react";
 import { ZodSchema } from "zod";
 import _trimEnd from "lodash/trimEnd";
 
-import { AsyncSelect, DynamicForm, TextField } from "components";
+import { AsyncAutocomplete, DynamicForm, TextField } from "components";
 import { useGetSubject } from "views/Subjects/api";
 
 export interface SubjectsFormProps {
@@ -10,7 +10,7 @@ export interface SubjectsFormProps {
   schema: ZodSchema;
 }
 
-export const SubjectsForm = ({ subjectId, schema }: SubjectsFormProps) => {
+export function SubjectsForm({ subjectId, schema }: SubjectsFormProps) {
   return (
     <DynamicForm
       hasAutoToasts
@@ -29,7 +29,7 @@ export const SubjectsForm = ({ subjectId, schema }: SubjectsFormProps) => {
           <TextField.Form name="name" label="Nome" className="md:col-span-3" />
         </div>
         <div className="flex grid md:grid-cols-3 gap-3">
-          <AsyncSelect.Form
+          <AsyncAutocomplete.Form
             name="course"
             label="Curso"
             endpoint="courses"
@@ -52,4 +52,4 @@ export const SubjectsForm = ({ subjectId, schema }: SubjectsFormProps) => {
       </div>
     </DynamicForm>
   );
-};
+}

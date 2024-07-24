@@ -1,11 +1,11 @@
 import { Card, CardBody, CardProps } from "@nextui-org/react";
 import { PerPageSelect } from "../PerPageSelect";
 import { Pagination } from "../Pagination";
-import { useListingContext } from "hooks";
+import { useListingContext } from "core";
 import { numberFormat } from "utils";
 
-export const ListingFooter = (props: CardProps) => {
-  const { data, totalItems } = useListingContext();
+export function ListingFooter(props: CardProps) {
+  const { data, page, totalPages, totalItems, setPage } = useListingContext();
 
   return (
     <Card {...props}>
@@ -16,10 +16,10 @@ export const ListingFooter = (props: CardProps) => {
           </div>
           <div className="flex items-center gap-5">
             <PerPageSelect />
-            <Pagination />
+            <Pagination page={page} totalPages={totalPages} setPage={setPage} />
           </div>
         </div>
       </CardBody>
     </Card>
   );
-};
+}

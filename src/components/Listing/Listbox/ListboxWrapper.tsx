@@ -5,15 +5,17 @@ interface ListboxWrapperProps extends HTMLAttributes<HTMLDivElement> {
   children: JSX.Element;
 }
 
-export const ListboxWrapper = ({
+export function ListboxWrapper({
   children,
   className,
   ...otherProps
-}: ListboxWrapperProps) => (
-  <div
-    {...otherProps}
-    className={classNames("flex flex-col items-center w-full", className)}
-  >
-    {children}
-  </div>
-);
+}: ListboxWrapperProps) {
+  return (
+    <div
+      {...otherProps}
+      className={classNames("flex flex-col items-center w-full", className)}
+    >
+      {children}
+    </div>
+  );
+}

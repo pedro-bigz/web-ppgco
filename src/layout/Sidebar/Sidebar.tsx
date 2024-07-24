@@ -1,38 +1,18 @@
-// import { Accordion, AccordionItem } from "@nextui-org/react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Listbox, ListboxItem, Tooltip } from "@nextui-org/react";
 import classNames from "classnames";
 
 import { ChevronRight, LogoUFU45 } from "assets";
-import { ListMenuItemType, SIDEBAR_MENU_ITENS } from "./Sidebar.mock";
-import { Listbox, ListboxItem, Tooltip } from "@nextui-org/react";
-import { Icon } from "components";
-import { ListboxWrapper } from "components";
-import { useSidebarContext } from "./hooks";
-import { MouseEvent } from "react";
-
-// interface ChildrenMenuProps extends ListMenuItemType {
-//   isSelectedItem: boolean;
-//   isLastItem: boolean;
-//   onClick: () => void;
-// }
+import { Icon, ListboxWrapper } from "components";
+import { useSidebar } from "./useSidebar";
 
 export function Sidebar() {
-  const { pathname } = useLocation();
-  const { isOpen, setIsOpen, navigate } = useSidebarContext();
-
-  const handleNavigate = (item: ListMenuItemType) => {
-    return (e: MouseEvent<HTMLLIElement>) => {
-      navigate(item.route);
-    };
-  };
-
-  const isSomeChildMenuSelected = ({ route, children }: ListMenuItemType) => {
-    const hasMatchingChild = children?.some(
-      ({ route }) => route && pathname.includes(route)
-    );
-
-    return (route && pathname.includes(route)) || hasMatchingChild;
-  };
+  const {
+    isOpen,
+    sidebarItems,
+    setIsOpen,
+    handleNavigate,
+    isSomeChildMenuSelected,
+  } = useSidebar();
 
   return (
     <div
@@ -51,7 +31,7 @@ export function Sidebar() {
 
       <ListboxWrapper className="mx-[21px] my-[14px] w-full max-w-[260px] px-1 py-2">
         <Listbox variant="flat" aria-label="Listbox menu with icons">
-          {SIDEBAR_MENU_ITENS.map((item) => {
+          {sidebarItems.map((item) => {
             const isSelectedMenu = isSomeChildMenuSelected(item);
 
             return (
@@ -61,37 +41,48 @@ export function Sidebar() {
                 shouldHighlightOnFocus={false}
                 classNames={{
                   base: classNames(
-                    "max-w-full justify-center items-center transition-all duration-1000 ease-in-out w-full h-[3.5rem]",
+                    "max-w-full justify-center items-center transition-all duration-700 ease-in-out w-full h-[3.5rem]",
                     {
                       "px-5 flex": isOpen,
                       "w-0 md:w-12 hidden md:flex": !isOpen,
-                      "hover:bg-[#6b7280 !important] bg-[#0059b6] text-white":
+                      "hover:bg-[#0000ff !important] bg-[#0059b6] text-white hover:text-[#1f2937 !important]":
                         isSelectedMenu,
                       "hover:bg-gray-200": !isSelectedMenu,
                     }
                   ),
-                  title: "bg-red",
+                  wrapper: "bg-green",
+                  title: "text-inherit",
                 }}
               >
-                <div
-                  className={classNames(
-                    "flex text-base text-gray-500 font-bold whitespace-nowrap",
-                    {
-                      "text-white": isSelectedMenu,
-                      "justify-center": !isOpen,
-                      "items-center": !isOpen,
-                    }
-                  )}
+                <Tooltip
+                  placement="right-end"
+                  isDisabled={isOpen}
+                  content={item.title}
                 >
-                  <Icon
-                    icon={item?.icon}
-                    iconProps={
-                      isSelectedMenu ? { color: "text-white" } : undefined
-                    }
-                  />
+                  <div
+                    className={classNames(
+                      "flex text-base text-gray-500 font-bold whitespace-nowrap",
+                      {
+                        "text-inherit": isSelectedMenu,
+                        "justify-center": !isOpen,
+                        "items-center": !isOpen,
+                      }
+                    )}
+                  >
+                    <div className="flex items-center text-inherit">
+                      <Icon
+                        icon={item?.icon}
+                        iconProps={
+                          isSelectedMenu ? { color: "text-inhreit" } : undefined
+                        }
+                      />
+                    </div>
 
-                  {isOpen && <div className="ml-4">{item.title}</div>}
-                </div>
+                    {isOpen && (
+                      <div className="ml-4 text-inhreit">{item.title}</div>
+                    )}
+                  </div>
+                </Tooltip>
               </ListboxItem>
             );
           })}

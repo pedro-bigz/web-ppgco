@@ -27,7 +27,7 @@ export interface ListboxProps extends Omit<NextListboxProps, "children"> {
   itemProps?: NextListboxItemProps;
 }
 
-export const Listbox = ({
+export function Listbox({
   items,
   track = {
     label: "label",
@@ -37,7 +37,7 @@ export const Listbox = ({
   itemProps,
   onSelectionChange,
   ...props
-}: ListboxProps) => {
+}: ListboxProps) {
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
 
   const onChange = (keys: Selection) => {
@@ -62,4 +62,4 @@ export const Listbox = ({
       </NextListbox>
     </ListboxWrapper>
   );
-};
+}

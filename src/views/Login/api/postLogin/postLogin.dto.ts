@@ -1,4 +1,5 @@
 import z from "zod";
+import { ApiProfileResponse } from "core";
 
 export const loginFormSchema = z.object({
   password: z.string().min(1, "O campo de senha é obrigatório").max(200),
@@ -9,21 +10,13 @@ export const loginFormSchema = z.object({
     .transform((value) => value.toLowerCase()),
 });
 
-export const loginFormResponseSchema = z.object({
-  auth: z.object({
-    accessToken: z.string(),
-    refreshToken: z.string(),
-  }),
-  user: z.object({
-    id: z.number(),
-    name: z.string(),
-    email: z.string(),
-    avatar: z.string().nullable(),
-  }),
-});
-
 export type LoginSchemaType = typeof loginFormSchema;
-export type LoginResponseSchemaType = typeof loginFormResponseSchema;
 
 export type LoginFormDto = Omit<z.infer<LoginSchemaType>, "keepConnected">;
-export type LoginFormResponseDto = z.infer<LoginResponseSchemaType>;
+export type LoginFormResponseDto = {
+  auth: {
+    accessToken: string;
+    refreshToken: string;
+  };
+  user: ApiProfileResponse;
+};

@@ -1,10 +1,12 @@
 import { Pagination as NextPagination } from "@nextui-org/react";
-import { useListingContext } from "hooks";
-import { useEffect } from "react";
 
-export const Pagination = () => {
-  const { page, totalPages, setPage } = useListingContext();
+interface PaginationProps {
+  page: number;
+  totalPages: number;
+  setPage: (value: number) => void;
+}
 
+export function Pagination({ page, totalPages, setPage }: PaginationProps) {
   return (
     <NextPagination
       loop
@@ -21,4 +23,4 @@ export const Pagination = () => {
       }}
     />
   );
-};
+}

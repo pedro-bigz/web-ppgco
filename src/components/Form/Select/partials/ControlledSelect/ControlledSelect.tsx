@@ -1,4 +1,5 @@
 import { useController, useFormContext } from "react-hook-form";
+import _get from "lodash/get";
 import {
   OnChangeAttributes,
   Select,
@@ -11,7 +12,7 @@ export interface ControlledSelectProps
   onChange?: SelectOnChangeHandler;
 }
 
-export const ControlledSelect = ({
+export function ControlledSelect({
   name,
   track = {
     label: "label",
@@ -20,7 +21,7 @@ export const ControlledSelect = ({
   onChange,
   defaultValue = "",
   ...props
-}: ControlledSelectProps) => {
+}: ControlledSelectProps) {
   const selectName = name + "_" + track.key;
 
   const { control, setValue } = useFormContext();
@@ -29,8 +30,8 @@ export const ControlledSelect = ({
     control,
     defaultValue,
   });
-  const error = formState.errors[name];
-  const selectError = formState.errors[selectName];
+  const error = _get(formState.errors, name);
+  const selectError = _get(formState.errors, selectName);
 
   const onSelectChange = ({ e, option }: OnChangeAttributes) => {
     field.onChange(e.target.value);
@@ -50,4 +51,4 @@ export const ControlledSelect = ({
       />
     </>
   );
-};
+}

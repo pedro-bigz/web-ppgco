@@ -17,7 +17,7 @@ export interface UncontrolledTextFieldProps
   onChange?: (...e: any[]) => void;
 }
 
-export const UncontrolledTextField: React.FC<UncontrolledTextFieldProps> = ({
+export function UncontrolledTextField({
   name,
   value,
   innerRef,
@@ -34,7 +34,7 @@ export const UncontrolledTextField: React.FC<UncontrolledTextFieldProps> = ({
   position,
   onChange,
   ...props
-}) => {
+}: UncontrolledTextFieldProps) {
   const onInputChange = (...e: any[]) => {
     onChange?.(...e);
   };
@@ -61,4 +61,4 @@ export const UncontrolledTextField: React.FC<UncontrolledTextFieldProps> = ({
       position={position}
     />
   );
-};
+}

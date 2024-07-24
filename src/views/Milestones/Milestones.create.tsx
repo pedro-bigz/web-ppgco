@@ -6,20 +6,17 @@ const schema = z.object({
   project_ids: z.array(
     z
       .string()
-      // .min(1, "O projeto deve ser selecionado")
+      .min(1, "O projeto deve ser selecionado")
       .transform((num) => +num)
   ),
   expected_date: z
     .custom(isValidDate, "Insira uma data válida")
     .transform(toIsoString),
-  process_number_sei: z
-    .string()
-    // .min(1, "Campo obrigatório")
-    .transform((num) => +num),
-  description: z.string().optional(),
-  meeting_collegiate: z.string(), //.min(1, "Campo obrigatório"),
+  process_number_sei: z.string(),
+  description: z.string(),
+  meeting_collegiate: z.string().optional(),
   need_document: z.boolean(),
-  situation: z.string(), //.min(1, "Campo obrigatório"),
+  situation_id: z.string().transform((num) => +num),
   documents: z
     .array(
       z.object({
@@ -30,6 +27,6 @@ const schema = z.object({
     .optional(),
 });
 
-export const MilestoneCreatePage = () => {
+export function MilestoneCreatePage() {
   return <MilestoneForm schema={schema} />;
-};
+}

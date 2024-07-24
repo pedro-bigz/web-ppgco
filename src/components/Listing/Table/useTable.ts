@@ -26,7 +26,10 @@ export function useTable({
   isRemoteData = true,
   onSelectKeys,
 }: UseTableParams) {
-  const { handleSort } = useTableSort({ rows, isRemoteData });
+  const { isSorted, getSortIcon, getSortDirection, handleSort } = useTableSort({
+    rows,
+    isRemoteData,
+  });
   const { selectedKeys, handleOnSelectionChange } = useBulkSelection({
     onSelectKeys,
   });
@@ -45,7 +48,7 @@ export function useTable({
   const formatCellValue = (
     text: string | number | boolean | null | undefined
   ) => {
-    if (!text) {
+    if (typeof text !== "number" && typeof text !== "boolean" && !text) {
       return "";
     }
 
@@ -80,6 +83,9 @@ export function useTable({
     selectedKeys,
     isMouseEnter,
     columnsWithActions,
+    isSorted,
+    getSortIcon,
+    getSortDirection,
     handleSort,
     setIsMouseEnter,
     handleMouseEnter,

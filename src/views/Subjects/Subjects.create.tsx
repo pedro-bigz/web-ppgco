@@ -18,6 +18,6 @@ const schema = z.object({
   course_id: z.string().transform((num) => +num),
 });
 
-export const SubjectsCreatePage = () => {
+export function SubjectsCreatePage() {
   return <SubjectsForm schema={schema} />;
-};
+}

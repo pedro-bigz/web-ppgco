@@ -7,7 +7,7 @@ export function isValidDate(date?: string | unknown, format?: string) {
     return false;
   }
 
-  const dateFormat = format || "DD/MM/YYYY";
+  const dateFormat = format || "YYYY-MM-DD";
 
   return dayjs(date, dateFormat).isValid();
 }

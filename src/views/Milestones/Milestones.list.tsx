@@ -6,7 +6,14 @@ export function MilestoneListingPage() {
   return (
     <ListingProvider>
       <ListingHeader title="Marcos Temporais" />
-      <ListingBody endpoint="/milestone" columns={columns} />
+      <ListingBody
+        endpoint="/milestones"
+        columns={columns}
+        track={{
+          key: "id",
+          label: "description",
+        }}
+      />
     </ListingProvider>
   );
 }

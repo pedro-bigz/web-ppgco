@@ -7,7 +7,7 @@ const schema = z.object({
   last_name: z.string().min(1, "Este campo é obrigatório"),
   lattes: z.string().min(1, "Este campo é obrigatório"),
   email: z.string().email("E-mail inválido"),
-  fone: z.string().max(20).optional(),
+  phone: z.string().max(20).optional(),
   research_line_id: z
     .string()
     .min(1, "Este campo é obrigatório")
@@ -15,6 +15,6 @@ const schema = z.object({
   birth_date: z.string().transform(toIsoString),
 });
 
-export const ProfessorsCreatePage = () => {
+export function ProfessorsCreatePage() {
   return <ProfessorForm schema={schema} />;
-};
+}

@@ -20,4 +20,9 @@ export type {
   ControlledAsyncSelectProps,
   UncontrolledAsyncSelectProps,
 };
-export { ControlledAsyncSelect as default, AsyncSelect };
+export {
+  ControlledAsyncSelect as default,
+  AsyncSelect,
+  ControlledAsyncSelect,
+  UncontrolledAsyncSelect,
+};

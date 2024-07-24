@@ -1,9 +1,9 @@
-import { useApiQuery } from "hooks";
+import { useApiQuery } from "core";
 
-export const useGetMilestone = (milestoneId?: string) => {
+export function useGetMilestone(milestoneId?: string) {
   return useApiQuery({
-    endpoint: "/milestone/" + milestoneId,
+    endpoint: "/milestones/" + milestoneId,
     options: { enabled: Boolean(milestoneId) },
-    queryKey: ["milestone", String(milestoneId)],
+    queryKey: ["milestones", String(milestoneId)],
   });
-};
+}

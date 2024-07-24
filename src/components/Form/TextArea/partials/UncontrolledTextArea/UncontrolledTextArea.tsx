@@ -21,10 +21,10 @@ export interface UncontrolledTextAreaProps extends NextTextAreaProps {
   ) => void;
 }
 
-export const UncontrolledTextArea: React.FC<UncontrolledTextAreaProps> = ({
+export function UncontrolledTextArea({
   classNames,
   ...props
-}) => {
+}: UncontrolledTextAreaProps) {
   return (
     <NextTextarea
       {...props}
@@ -39,4 +39,4 @@ export const UncontrolledTextArea: React.FC<UncontrolledTextAreaProps> = ({
       }}
     />
   );
-};
+}

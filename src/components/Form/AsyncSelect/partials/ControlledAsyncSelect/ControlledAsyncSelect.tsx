@@ -1,4 +1,5 @@
 import { useController, useFormContext } from "react-hook-form";
+import _get from "lodash/get";
 import {
   OnChangeAttributes,
   AsyncSelect,
@@ -12,13 +13,13 @@ export interface ControlledAsyncSelectProps
   onChange?: AsyncSelectOnChangeHandler;
 }
 
-export const ControlledAsyncSelect = ({
+export function ControlledAsyncSelect({
   name,
   track,
   onChange,
   defaultValue = "",
   ...props
-}: ControlledAsyncSelectProps) => {
+}: ControlledAsyncSelectProps) {
   const selectName = name + "_" + track.key;
 
   const { control, setValue } = useFormContext();
@@ -27,13 +28,13 @@ export const ControlledAsyncSelect = ({
     control,
     defaultValue,
   });
-  const error = formState.errors[name];
-  const selectError = formState.errors[selectName];
+  const error = _get(formState.errors, name);
+  const selectError = _get(formState.errors, selectName);
 
-  const onSelectChange = ({ e, option }: OnChangeAttributes) => {
+  const onSelectChange = ({ e, options, keys }: OnChangeAttributes) => {
     field.onChange(e.target.value);
-    setValue(name, option);
-    onChange?.({ e, option });
+    setValue(name, options);
+    onChange?.({ e, options, keys });
   };
 
   return (
@@ -49,4 +50,4 @@ export const ControlledAsyncSelect = ({
       />
     </>
   );
-};
+}

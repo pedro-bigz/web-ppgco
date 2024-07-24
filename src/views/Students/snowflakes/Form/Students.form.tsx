@@ -1,44 +1,49 @@
 import { ZodSchema } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import _trimEnd from "lodash/trimEnd";
 import {
-  AsyncSelect,
+  AsyncAutocomplete,
   CardForm,
   Checkbox,
   DatePicker,
-  DynamicForm,
-  FieldArray,
-  resolveEndpoint,
   TextField,
 } from "components";
-import { useGetStudent } from "views/Students/api";
 import { Button } from "@nextui-org/react";
-import { useCustomForm } from "hooks";
-import { useFieldArray, useFormContext } from "react-hook-form";
-import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { TrashIcon } from "assets";
-import { ReactNode, useEffect } from "react";
 import { useCoadvisorArray } from "./useCoadvisorArray";
 import { useStudentsForm } from "./useStudentsForm";
+import { useEffect } from "react";
+import { parseDate } from "@internationalized/date";
 
 export interface StudentsFormProps {
   studentId?: string;
   schema: ZodSchema;
 }
 
-export const StudentsForm = ({ studentId, schema }: StudentsFormProps) => {
-  const { watch, handleOnSubmit, ...formProps } = useStudentsForm({
+export function StudentsForm({ studentId, schema }: StudentsFormProps) {
+  const { student, formDefaultValues, ...formProps } = useStudentsForm({
     studentId,
     schema,
   });
 
-  const { newDocument, isLast, onRemove, fields } =
-    useCoadvisorArray(formProps);
+  const { newDocument, isLast, onRemove, fields } = useCoadvisorArray({
+    student,
+    formDefaultValues,
+    ...formProps,
+  });
+
+  const { watch, setValue, handleOnSubmit } = formProps;
+  const [entryDate, startDate] = watch(["entry_date", "start_date"]);
+
+  useEffect(() => {
+    if (!entryDate || startDate) return;
+    setValue("start_date", entryDate);
+    setValue("start_date_picker", parseDate(entryDate));
+  }, [entryDate]);
 
   return (
-    <CardForm {...formProps} watch={watch} onSubmit={handleOnSubmit}>
+    <CardForm {...formProps} onSubmit={handleOnSubmit}>
       <div className="flex flex-col gap-3">
         <h3 className="text-xl font-bold font-montserrat">
           Formulário de {!studentId ? "cadastro" : "edição"} de Estudante
@@ -76,7 +81,7 @@ export const StudentsForm = ({ studentId, schema }: StudentsFormProps) => {
           />
           <DatePicker.Form
             name="sucupira_date"
-            label="Data Sucupira"
+            label="Data de Atualização Sucupira"
             className="md:col-span-2 lg:col-span-1"
           />
         </div>
@@ -99,7 +104,7 @@ export const StudentsForm = ({ studentId, schema }: StudentsFormProps) => {
           />
         </div>
         <div className="flex grid md:grid-cols-2 lg:grid-cols-3 gap-3">
-          <AsyncSelect.Form
+          <AsyncAutocomplete.Form
             name="course"
             label="Curso"
             endpoint="courses"
@@ -108,7 +113,7 @@ export const StudentsForm = ({ studentId, schema }: StudentsFormProps) => {
           />
           <TextField.Form name="lattes" label="Lattes" />
           <TextField.Form
-            name="fone"
+            name="phone"
             label="Celular"
             mask={["(00) 0000-0000", "(00) 00000-0000"]}
           />
@@ -117,8 +122,9 @@ export const StudentsForm = ({ studentId, schema }: StudentsFormProps) => {
         <h3 className="text-base font-bold font-montserrat mt-10 mb-2">
           Dados do Projeto
         </h3>
-        <div className="flex gap-3">
-          <AsyncSelect.Form
+        <div className="flex flex-col gap-3">
+          <TextField.Form name="title" label="Título" defaultValue="ND" />
+          <AsyncAutocomplete.Form
             name="research_line"
             label="Linha de Pesquisa"
             endpoint="research-lines"
@@ -126,11 +132,11 @@ export const StudentsForm = ({ studentId, schema }: StudentsFormProps) => {
           />
         </div>
         <div className="flex grid md:grid-cols-2 gap-3">
-          <DatePicker.Form name="start_date" label="Data de ínicio " />
+          <DatePicker.Form name="start_date" label="Data de ínicio" />
           <DatePicker.Form name="end_date" label="Data de fim" />
         </div>
         <div className="flex gap-3">
-          <AsyncSelect.Form
+          <AsyncAutocomplete.Form
             name="advisor"
             label="Orientador"
             endpoint="advisors"
@@ -149,7 +155,7 @@ export const StudentsForm = ({ studentId, schema }: StudentsFormProps) => {
             <div key={field.id}>
               <div className={"flex grid md:grid-cols-9 gap-3"}>
                 <div className={"flex flex-col col-span-8 gap-3"}>
-                  <AsyncSelect.Form
+                  <AsyncAutocomplete.Form
                     name={`coadvisors.${index}.coadvisor`}
                     label="Coorientador"
                     endpoint="advisors"
@@ -210,4 +216,4 @@ export const StudentsForm = ({ studentId, schema }: StudentsFormProps) => {
       </div>
     </CardForm>
   );
-};
+}

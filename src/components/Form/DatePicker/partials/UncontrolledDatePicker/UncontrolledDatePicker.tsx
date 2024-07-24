@@ -6,12 +6,12 @@ export interface UncontrolledDatePickerProps extends DatePickerProps {
   onChange?: (...e: any[]) => void;
 }
 
-export const UncontrolledDatePicker = ({
+export function UncontrolledDatePicker({
   defaultValue,
   onChange,
   size = "sm",
   ...props
-}: UncontrolledDatePickerProps) => {
+}: UncontrolledDatePickerProps) {
   const onInputChange = (...e: any[]) => {
     onChange?.(...e);
   };
@@ -19,4 +19,4 @@ export const UncontrolledDatePicker = ({
   return (
     <DatePicker {...props} fullWidth size={size} onChange={onInputChange} />
   );
-};
+}

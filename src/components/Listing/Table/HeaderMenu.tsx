@@ -29,16 +29,17 @@ export interface HeaderMenuProps {
   dropdownMenuProps?: Omit<DropdownMenuProps, "children">;
 }
 
-export const HeaderMenu = ({
+export function HeaderMenu({
   isVisible,
   allowsSorting,
   column,
   onSort,
   dropdownProps = {},
   dropdownMenuProps = {},
-}: HeaderMenuProps) => {
+}: HeaderMenuProps) {
   const handleSort = (direction: Order) => {
     return (e: MouseEvent<HTMLLIElement>) => {
+      console.log({ column, direction });
       onSort?.(column, direction, e);
     };
   };
@@ -78,4 +79,4 @@ export const HeaderMenu = ({
       </DropdownMenu>
     </Dropdown>
   );
-};
+}

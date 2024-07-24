@@ -1,9 +1,10 @@
 import { ChangeEvent } from "react";
 
-interface HandleEventCallback {
+export interface HandleEventCallback {
   (value: string): void;
 }
-type InputElements =
+
+export type InputElements =
   | HTMLInputElement
   | HTMLOptionElement
   | HTMLSelectElement

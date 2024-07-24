@@ -4,12 +4,10 @@ import {
   ReactNode,
   Dispatch,
   SetStateAction,
+  useEffect,
 } from "react";
-import { useLoadingContext } from "hooks";
-// import { Filter } from "components";
 import _isEmpty from "lodash/isEmpty";
-
-export type Filter = Record<string, string | number | boolean>;
+import { FilterData, Filters, useFilters, useLoadingContext } from "../hooks";
 
 export type RefetchCallback = (...args: any[]) => void;
 export type DBFieldData = { type: string; length: number };
@@ -24,17 +22,22 @@ export type ListingContextValueInterface = {
   perPage: number;
   page: number;
   search: string;
-  filters: Filter[];
+  filters: Filters;
   totalPages: number;
   totalItems: number;
   isLoading: boolean;
   loadingNumber: number;
-  // hasFilters: boolean;
-  // numFilters: number;
+  hasFilters: boolean;
+  numFilters: number;
   orderBy: OrderBy[];
   refetch: RefetchCallback;
+  saveFilters: () => void;
+  resetSavedFilters: () => void;
   load: () => void;
   stopLoading: () => void;
+  addFilter: (key: string, filter: FilterData) => void;
+  rmvFilter: (key: string) => void;
+  resetFilters: () => void;
   removeItem: <T = unknown>(find: (data: T) => any) => void;
   setData: Dispatch<SetStateAction<unknown[]>>;
   setOrderBy: Dispatch<SetStateAction<OrderBy[]>>;
@@ -42,7 +45,7 @@ export type ListingContextValueInterface = {
   setCustomData: Dispatch<SetStateAction<Record<string, any>>>;
   setPage: Dispatch<SetStateAction<number>>;
   setSearch: Dispatch<SetStateAction<string>>;
-  setFilters: Dispatch<SetStateAction<Filter[]>>;
+  setFilters: Dispatch<SetStateAction<Filters>>;
   setPerPage: Dispatch<SetStateAction<number>>;
   setRefetch: Dispatch<SetStateAction<RefetchCallback>>;
   setTotalPages: Dispatch<SetStateAction<number>>;
@@ -59,7 +62,7 @@ const ListingContextDefaultValues = {
   customData: {},
   page: 1,
   search: "",
-  filters: [],
+  filters: {},
   perPage: 10,
   totalPages: 1,
   totalItems: 0,
@@ -68,6 +71,11 @@ const ListingContextDefaultValues = {
   loadingNumber: 0,
   numFilters: 0,
   orderBy: [],
+  saveFilters: () => undefined,
+  resetSavedFilters: () => undefined,
+  addFilter: () => undefined,
+  rmvFilter: () => undefined,
+  resetFilters: () => undefined,
   load: () => undefined,
   setOrderBy: () => undefined,
   stopLoading: () => undefined,
@@ -95,7 +103,7 @@ type ListingProviderProps = {
   children: ReactNode;
 };
 
-export const ListingProvider = ({ children }: ListingProviderProps) => {
+export function ListingProvider({ children }: ListingProviderProps) {
   const {
     data: defaultData,
     page: defaultPage,
@@ -115,7 +123,6 @@ export const ListingProvider = ({ children }: ListingProviderProps) => {
     useState<Record<string, DBFieldData>>(defaultFields);
   const [page, setPage] = useState<number>(defaultPage);
   const [search, setSearch] = useState<string>(defaultSearch);
-  const [filters, setFilters] = useState<Filter[]>(defaultFilters);
   const [perPage, setPerPage] = useState<number>(defaultPerPage);
   const [orderBy, setOrderBy] = useState<OrderBy[]>(defaultOrderBy);
   const [totalPages, setTotalPages] = useState<number>(defaultTotalPages);
@@ -124,6 +131,17 @@ export const ListingProvider = ({ children }: ListingProviderProps) => {
     useState<Record<string, any>>(defaultCustomData);
   const [refetch, setRefetch] = useState<RefetchCallback>(defaultRefetch);
   const {
+    filters,
+    numFilters,
+    hasFilters,
+    saveFilters,
+    setFilters,
+    addFilter,
+    rmvFilter,
+    resetFilters,
+    resetSavedFilters,
+  } = useFilters(defaultFilters);
+  const {
     isLoading,
     loadingNumber,
     load,
@@ -131,52 +149,6 @@ export const ListingProvider = ({ children }: ListingProviderProps) => {
     setIsLoading,
     setLoadingNumber,
   } = useLoadingContext();
-
-  // const hasFilters = !_isEmpty(filters);
-  // const numFilters = filters.length;
-
-  // setData([
-  //   {
-  //     id: "1",
-  //     name: "Tony Reichert",
-  //     role: "CEO",
-  //     status: "Active",
-  //     teste: "Active",
-  //     teste2: "Active",
-  //     teste3: "Active",
-  //     teste4: "Active",
-  //   },
-  //   {
-  //     id: "2",
-  //     name: "Zoey Lang",
-  //     role: "Technical Lead",
-  //     status: "Paused",
-  //     teste: "Active",
-  //     teste2: "Active",
-  //     teste3: "Active",
-  //     teste4: "Active",
-  //   },
-  //   {
-  //     id: "3",
-  //     name: "Jane Fisher",
-  //     role: "Senior Developer",
-  //     status: "Active",
-  //     teste: "Active",
-  //     teste2: "Active",
-  //     teste3: "Active",
-  //     teste4: "Active",
-  //   },
-  //   {
-  //     id: "4",
-  //     name: "William Howard",
-  //     role: "Community Manager",
-  //     status: "Vacation",
-  //     teste: "Active",
-  //     teste2: "Active",
-  //     teste3: "Active",
-  //     teste4: "Active",
-  //   },
-  // ]);
 
   function removeItem<T = unknown>(find: Finder<T>) {
     const list = [...data];
@@ -198,15 +170,19 @@ export const ListingProvider = ({ children }: ListingProviderProps) => {
     customData,
     fields,
     filters,
-    // hasFilters,
-    // numFilters,
+    hasFilters,
+    numFilters,
     orderBy,
+    saveFilters,
+    setFilters,
+    addFilter,
+    rmvFilter,
+    resetFilters,
     setOrderBy,
     setFields,
     setCustomData,
     load,
     stopLoading,
-    setFilters,
     setData,
     setPage,
     setSearch,
@@ -218,6 +194,7 @@ export const ListingProvider = ({ children }: ListingProviderProps) => {
     refetch,
     setRefetch,
     removeItem,
+    resetSavedFilters,
   };
 
   return (
@@ -225,4 +202,4 @@ export const ListingProvider = ({ children }: ListingProviderProps) => {
       {children}
     </ListingContext.Provider>
   );
-};
+}

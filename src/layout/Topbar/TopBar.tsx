@@ -1,4 +1,4 @@
-import { useNavigationStore, useUserContext } from "hooks";
+import { useNavigationStore, useUserContext } from "core";
 import { ProfileDrowdown, SearchBar } from "./partials";
 import { Button } from "@nextui-org/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

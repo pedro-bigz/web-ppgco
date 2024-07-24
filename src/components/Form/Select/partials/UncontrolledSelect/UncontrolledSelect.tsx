@@ -2,13 +2,13 @@ import { Select, SelectProps } from "../Select";
 
 export interface UncontrolledSelectProps extends SelectProps {}
 
-export const UncontrolledSelect = ({
+export function UncontrolledSelect({
   variant = "bordered",
   ...props
-}: UncontrolledSelectProps) => {
+}: UncontrolledSelectProps) {
   return (
     <>
       <Select {...props} variant={variant} />
     </>
   );
-};
+}

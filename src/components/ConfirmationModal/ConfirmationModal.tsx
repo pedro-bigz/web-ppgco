@@ -23,7 +23,7 @@ export interface ConfirmationModalInterface {
   onSetted?: ConfirmationEventHandler<boolean>;
 }
 
-export const ConfirmationModal = ({
+export function ConfirmationModal({
   status,
   isOpen,
   title,
@@ -32,7 +32,7 @@ export const ConfirmationModal = ({
   onAccept,
   onReject,
   onSetted,
-}: ConfirmationModalInterface) => {
+}: ConfirmationModalInterface) {
   const handleOnEvent =
     (
       onClose: ConfirmationEventHandler,
@@ -77,4 +77,4 @@ export const ConfirmationModal = ({
       </ModalContent>
     </Modal>
   );
-};
+}

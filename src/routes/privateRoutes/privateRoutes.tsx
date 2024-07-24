@@ -15,6 +15,17 @@ import {
   ResearchLineListingPage,
   ResearchLineCreatePage,
   ResearchLineUpdatePage,
+  PublicationsListingPage,
+  PublicationsCreatePage,
+  PublicationsUpdatePage,
+  ConfigurationMenu,
+  DefaultMilestoneListingPage,
+  DefaultMilestoneUpdatePage,
+  NotificationsListingPage,
+  NotificationsCreatePage,
+  UsersListingPage,
+  UsersCreatePage,
+  UsersUpdatePage,
 } from "views";
 
 export const privateRoutes: RouteObject[] = [
@@ -51,8 +62,24 @@ export const privateRoutes: RouteObject[] = [
     element: <MilestoneUpdatePage />,
   },
   {
+    path: "/marcos-temporais-padrao",
+    element: <DefaultMilestoneListingPage />,
+  },
+  {
+    path: "/marcos-temporais-padrao/:id/editar",
+    element: <DefaultMilestoneUpdatePage />,
+  },
+  {
     path: "/publicacoes",
-    element: <div>Hello</div>,
+    element: <PublicationsListingPage />,
+  },
+  {
+    path: "/publicacoes/cadastrar",
+    element: <PublicationsCreatePage />,
+  },
+  {
+    path: "/publicacoes/:id/editar",
+    element: <PublicationsUpdatePage />,
   },
   {
     path: "/professores",
@@ -89,5 +116,29 @@ export const privateRoutes: RouteObject[] = [
   {
     path: "/linhas-de-pesquisa/:id/editar",
     element: <ResearchLineUpdatePage />,
+  },
+  {
+    path: "/configuracoes",
+    element: <ConfigurationMenu />,
+  },
+  {
+    path: "/notificacoes",
+    element: <NotificationsListingPage />,
+  },
+  {
+    path: "/notificacoes/cadastrar",
+    element: <NotificationsCreatePage />,
+  },
+  {
+    path: "/usuarios",
+    element: <UsersListingPage />,
+  },
+  {
+    path: "/usuarios/cadastrar",
+    element: <UsersCreatePage />,
+  },
+  {
+    path: "/usuarios/:id/cadastrar",
+    element: <UsersUpdatePage />,
   },
 ];

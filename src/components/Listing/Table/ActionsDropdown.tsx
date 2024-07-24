@@ -36,12 +36,12 @@ const handleOnClick = (action: ActionsItem, item: TableRowInterface) => {
   };
 };
 
-export const ActionsDropdown = ({
+export function ActionsDropdown({
   actions,
   item,
   isEndTable,
   classNames,
-}: ActionsDropdownProps) => {
+}: ActionsDropdownProps) {
   return (
     <div className="flex h-[56px] w-[130px]">
       <div
@@ -91,4 +91,4 @@ export const ActionsDropdown = ({
       </div>
     </div>
   );
-};
+}

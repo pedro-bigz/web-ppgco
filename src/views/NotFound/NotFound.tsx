@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
+import { handleClick } from "utils";
 
 export function NotFoundPage() {
   const navigate = useNavigate();
-  const handleClick = () => navigate("/");
 
   return (
     <div className="h-screen flex justify-center items-center">
@@ -13,7 +13,7 @@ export function NotFoundPage() {
           <a
             href="javascript:void(0)"
             className="font-mono text-xl no-underline hover:underline text-slate-400 hover:text-lime-600"
-            onClick={handleClick}
+            onClick={handleClick(navigate, "/")}
           >
             Voltar para o início
           </a>

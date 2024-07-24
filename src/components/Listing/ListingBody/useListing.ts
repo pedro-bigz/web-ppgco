@@ -1,11 +1,11 @@
-import { useApiQuery, useListingContext } from "hooks";
+import { hashKey } from "@tanstack/react-query";
+import { useApiQuery, useListingContext } from "core";
 import { useEffect } from "react";
-import { c } from "vite/dist/node/types.d-aGj9QkWt";
 
 interface UseListingParams {
   endpoint: string;
   params?: Record<string, string | number>;
-  isDisable?: boolean;
+  isDisabled?: boolean;
 }
 
 export interface PaginatedResponse<T = unknown> {
@@ -18,11 +18,11 @@ export interface PaginatedResponse<T = unknown> {
   totalPages: number;
 }
 
-export const useListing = ({
+export function useListing({
   endpoint,
   params,
-  isDisable = false,
-}: UseListingParams) => {
+  isDisabled = false,
+}: UseListingParams) {
   const {
     page,
     perPage,
@@ -36,23 +36,36 @@ export const useListing = ({
     setTotalItems,
     ...contextData
   } = useListingContext();
-  const orderParams = Object.fromEntries(orderBy);
   const requestParams = {
     page,
     perPage,
-    orderBy: orderParams,
+    orderBy,
     filters,
     ...params,
   };
 
-  const { isLoading, data, ...queryResult } = useApiQuery<PaginatedResponse>({
+  useEffect(() => {
+    console.log({ filters });
+  }, [filters]);
+
+  const hashK = hashKey([endpoint, JSON.stringify(requestParams)]);
+
+  useEffect(() => {
+    console.log({ hashKey: hashK });
+  }, [hashK]);
+
+  const { data, isLoading, ...queryResult } = useApiQuery<PaginatedResponse>({
     params: requestParams,
     endpoint,
     options: {
-      enabled: !isDisable,
+      enabled: !isDisabled,
     },
-    queryKey: [endpoint, JSON.stringify(requestParams)],
+    queryKey: [hashKey([endpoint, JSON.stringify(requestParams)])],
   });
+
+  useEffect(() => {
+    console.log({ data });
+  }, [data]);
 
   useEffect(() => {
     if (!data) return;
@@ -79,4 +92,4 @@ export const useListing = ({
     setTotalPages,
     setTotalItems,
   };
-};
+}

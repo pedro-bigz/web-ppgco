@@ -1,7 +1,4 @@
 import {
-  Track,
-  SelectOption,
-  SelectOptions,
   ControlledSelect,
   ControlledSelectProps,
   UncontrolledSelect,
@@ -18,12 +15,12 @@ const Select = {
   Uncontrolled: UncontrolledSelect,
 };
 
-export type {
-  Track,
-  SelectProps,
-  SelectOption,
-  SelectOptions,
-  ControlledSelectProps,
-  UncontrolledSelectProps,
+export type { SelectProps, ControlledSelectProps, UncontrolledSelectProps };
+export {
+  // ControlledSelect as default,
+  Select,
+  // ControlledSelect,
+  // UncontrolledSelect,
 };
-export { ControlledSelect as default, Select };
+
+// export * from "./partials";

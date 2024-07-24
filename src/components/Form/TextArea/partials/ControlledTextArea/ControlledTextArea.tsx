@@ -26,7 +26,7 @@ export interface ControlledTextAreaProps extends NextTextAreaProps {
   ) => void;
 }
 
-export const ControlledTextArea: React.FC<ControlledTextAreaProps> = ({
+export function ControlledTextArea({
   name,
   label = "",
   classNames,
@@ -37,7 +37,7 @@ export const ControlledTextArea: React.FC<ControlledTextAreaProps> = ({
   defaultValue = "",
   onChange,
   ...props
-}) => {
+}: ControlledTextAreaProps) {
   const { control } = useFormContext();
   const { field, formState } = useController({
     name,
@@ -71,4 +71,4 @@ export const ControlledTextArea: React.FC<ControlledTextAreaProps> = ({
       }}
     />
   );
-};
+}

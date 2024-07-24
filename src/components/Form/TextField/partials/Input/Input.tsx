@@ -17,8 +17,8 @@ export interface InputProps extends NextInputProps {
   maskConfig?: any;
   required?: boolean;
   disabled?: boolean;
-  startAdornment?: JSX.Element | string;
-  endAdornment?: JSX.Element | string;
+  // startContent?: JSX.Element | string;
+  // endContent?: JSX.Element | string;
   maxLength?: number;
   isHidden?: boolean;
   isPassword?: boolean;
@@ -27,7 +27,7 @@ export interface InputProps extends NextInputProps {
   onValueChange: (...event: any[]) => void;
 }
 
-export const Input: React.FC<InputProps> = ({
+export function Input({
   name,
   value,
   errorMessage,
@@ -46,7 +46,7 @@ export const Input: React.FC<InputProps> = ({
   onChange,
   onValueChange,
   ...props
-}) => {
+}: InputProps) {
   if (isHidden) {
     return <HiddenInput name={name} value={value} onChange={onChange} />;
   }
@@ -124,4 +124,4 @@ export const Input: React.FC<InputProps> = ({
       {...props}
     />
   );
-};
+}

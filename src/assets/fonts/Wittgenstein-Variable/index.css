@@ -1,0 +1,13 @@
+@font-face {
+  font-family: "WittgensteinV";
+  src: url("./Wittgenstein-Italic-VariableFont_wght.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "WittgensteinV";
+  src: url("./Wittgenstein-VariableFont_wght.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}

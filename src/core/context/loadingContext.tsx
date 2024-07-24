@@ -33,7 +33,7 @@ type LoadingProviderProps = {
   children: ReactNode;
 };
 
-export const LoadingProvider = ({ children }: LoadingProviderProps) => {
+export function LoadingProvider({ children }: LoadingProviderProps) {
   const { isLoading: defaultIsLoading, loadingNumber: defaultLoadingNumber } =
     LoadingContextDefaultValues;
 
@@ -64,4 +64,4 @@ export const LoadingProvider = ({ children }: LoadingProviderProps) => {
       {children}
     </LoadingContext.Provider>
   );
-};
+}

@@ -1,0 +1,20 @@
+@font-face {
+  font-family: "BonaNovaSC";
+  src: url("./BonaNovaSC-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "BonaNovaSC";
+  src: url("./BonaNovaSC-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "BonaNovaSC";
+  src: url("./BonaNovaSC-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}

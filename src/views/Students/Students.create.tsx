@@ -4,11 +4,12 @@ import { toIsoString } from "utils";
 
 const schema = z.object({
   registration: z.string().max(50).min(1, "Campo Obrigatório"),
+  title: z.string().min(1, "Campo Obrigatório"),
   first_name: z.string().min(1, "Campo Obrigatório"),
   last_name: z.string().min(1, "Campo Obrigatório"),
   email: z.string().min(1, "Campo Obrigatório"),
   birth_date: z.string().transform(toIsoString),
-  fone: z.string(),
+  phone: z.string(),
   course_id: z
     .string()
     .min(1, "Campo Obrigatório")
@@ -23,7 +24,7 @@ const schema = z.object({
     .or(z.literal(""))
     .transform((date) => (date ? toIsoString(date) : undefined)),
   entry_date: z.string().transform(toIsoString),
-  sucupira_date: z.string().transform(toIsoString),
+  sucupira_date: z.string().transform(toIsoString).optional(),
   start_date: z.string().transform(toIsoString),
   end_date: z.string().transform(toIsoString),
   advisor_id: z
@@ -43,6 +44,6 @@ const schema = z.object({
     .transform((arg) => arg.filter(Boolean)),
 });
 
-export const StudentsCreatePage = () => {
+export function StudentsCreatePage() {
   return <StudentsForm schema={schema} />;
-};
+}

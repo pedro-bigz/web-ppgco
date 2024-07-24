@@ -3,29 +3,22 @@ import {
   Select as NextSelect,
   SelectItem,
   SelectProps as NextSelectProps,
+  Selection,
 } from "@nextui-org/react";
 import _get from "lodash/get";
 import _isEqual from "lodash/isEqual";
 import _mapKeys from "lodash/mapKeys";
 import classnames from "classnames";
 import { TextField } from "components/Form/TextField";
-
-export type SelectOptionValue = any;
-export type SelectOption = Record<string, SelectOptionValue>;
-export type SelectOptions = SelectOption[];
-
-export interface OnChangeAttributes {
-  e: ChangeEvent<HTMLSelectElement>;
-  option: SelectOption;
-}
-
-export interface Track {
-  label: string;
-  key: string;
-}
+import {
+  SelectOnChangeAttributes,
+  SelectOption,
+  Track,
+  useMapOptions,
+} from "core";
 
 export interface SelectOnChangeHandler {
-  (props: OnChangeAttributes): void;
+  (props: SelectOnChangeAttributes): void;
 }
 
 export interface SelectProps
@@ -38,7 +31,7 @@ export interface SelectProps
   multiple?: boolean;
   required?: boolean;
   startAdornment?: JSX.Element | string;
-  options: SelectOptions;
+  options: SelectOption[];
   disabled?: boolean;
   onChange: SelectOnChangeHandler;
   value?: any;
@@ -46,7 +39,7 @@ export interface SelectProps
   errorMessage?: string;
 }
 
-export const Select: React.FC<SelectProps> = ({
+export function Select({
   name,
   size = "sm",
   track = {
@@ -62,28 +55,31 @@ export const Select: React.FC<SelectProps> = ({
   classNames,
   errorMessage,
   ...props
-}) => {
+}: SelectProps) {
   const selectName = name + "_" + track.key;
-  const [optionsMap, setOptionsMap] = useState<any>({});
+  const autocompleteRef = useRef<HTMLSelectElement>(null);
 
-  const optionsRef = useRef<SelectOptions>([]);
+  const { optionsMap } = useMapOptions({ options, track });
 
-  useEffect(() => {
-    if (_isEqual(optionsRef.current, options)) return;
+  const handleChange = (keys: Selection) => {
+    const options = [...keys].map((key) => _get(optionsMap, key));
 
-    setOptionsMap(_mapKeys(options, (option) => _get(option, track.key)));
+    const autocompleteRefProp = autocompleteRef?.current ?? {};
 
-    optionsRef.current = options;
-  }, [options]);
+    const e = {
+      target: {
+        ...autocompleteRefProp,
+        name,
+        value: String([...keys]),
+      },
+    } as ChangeEvent<HTMLSelectElement>;
 
-  const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const option = optionsMap[e.target.value];
-
-    if (!option) {
-      return console.error("Select item not founded");
+    if (!options) {
+      if (!required) onChange?.({ e });
+      else console.error("Select item not founded");
     }
 
-    onChange?.({ e, option });
+    onChange?.({ e, options, keys });
   };
 
   return (
@@ -97,7 +93,7 @@ export const Select: React.FC<SelectProps> = ({
         errorMessage={errorMessage}
         startContent={!startAdornment ? undefined : <>{startAdornment}</>}
         selectedKeys={value ? [String(value)] : undefined}
-        onChange={handleChange}
+        onSelectionChange={handleChange}
         fullWidth
         size={size}
         isDisabled={disabled}
@@ -118,4 +114,4 @@ export const Select: React.FC<SelectProps> = ({
       </NextSelect>
     </>
   );
-};
+}
