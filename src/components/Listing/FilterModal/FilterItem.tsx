@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect } from "react";
 import { Button } from "@nextui-org/react";
 import { useFormContext } from "react-hook-form";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -6,14 +6,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import _get from "lodash/get";
 import _isEmpty from "lodash/isEmpty";
 import _isEqual from "lodash/isEqual";
-import { filterOperators, Filters, FilterTypes, Operations } from "core";
-import {
-  Autocomplete,
-  TextField,
-  AutocompleteOption,
-  DatePicker,
-} from "components/Form";
+import { filterOperators, FilterTypes } from "core";
 import { handleClick } from "utils";
+import { Autocomplete, TextField, DatePicker } from "components/Form";
+import { useFiltersColumn } from "./useFiltersColumn";
+import { useFiltersOperator } from "./useFiltersOperator";
 
 export interface FilterItemColumn {
   key: string;
@@ -23,62 +20,58 @@ export interface FilterItemColumn {
 
 export interface FilterItemProps {
   name: string;
+  isLast?: boolean;
   columns: FilterItemColumn[];
   onAdd: () => void;
   onRmv: () => void;
 }
 
-export function FilterItem({ name, columns, onAdd, onRmv }: FilterItemProps) {
+const contentMasks = {
+  number: Number,
+  date: "00/00/0000",
+  string: String,
+  boolean: String,
+};
+
+export function FilterItem({
+  name,
+  columns,
+  onAdd,
+  onRmv,
+  isLast = false,
+}: FilterItemProps) {
   const { watch, setValue, formState } = useFormContext();
+
+  console.log({ isLast });
 
   const watchFieldValue = (...args: string[]) =>
     watch(args.map((arg) => `${name}.${arg}`));
 
-  const [operatorList, setOperatorList] = useState<AutocompleteOption[]>([]);
-  const [column = {}, operator = {}, content, columnKey, operatorKey] =
-    watchFieldValue(
-      "column",
-      "operator",
-      "content",
-      "column_key",
-      "operator_key"
-    );
-
-  const columnRef = useRef<string>();
-
-  const contentMasks = {
-    number: Number,
-    date: "00/00/0000",
-    string: String,
-    boolean: String,
-  };
-
-  const isBetween = useMemo(() => {
-    return (
-      operatorKey === Operations.between ||
-      operatorKey === Operations.notBetween
-    );
-  }, [operatorKey]);
+  const [content] = watchFieldValue("content");
 
   const setFieldValue = (key: string, value: any) => {
     setValue(`${name}.${key}`, value);
   };
 
-  const setColumn = (value: any) => {
-    setFieldValue("column", value);
-  };
+  const { column, columnRef } = useFiltersColumn({
+    columns,
+    setFieldValue,
+    watchFieldValue,
+  });
 
-  const setColumnKey = (value: any) => {
-    setFieldValue("column_key", value);
-  };
-
-  const setOperator = (value: any) => {
-    setFieldValue("operator", value);
-  };
-
-  const setOperatorKey = (value: any) => {
-    setFieldValue("operator_key", value);
-  };
+  const {
+    operator,
+    operatorKey,
+    operatorList,
+    isBetween,
+    isInOperation,
+    setOperatorList,
+    setOperator,
+    setOperatorKey,
+  } = useFiltersOperator({
+    setFieldValue,
+    watchFieldValue,
+  });
 
   useEffect(() => {
     if (_isEmpty(formState.errors)) return;
@@ -94,7 +87,7 @@ export function FilterItem({ name, columns, onAdd, onRmv }: FilterItemProps) {
 
     const firstLoop = !columnRef.current;
 
-    columnRef.current = column.type;
+    columnRef.current = type;
 
     const key = type as FilterTypes | undefined;
 
@@ -109,23 +102,11 @@ export function FilterItem({ name, columns, onAdd, onRmv }: FilterItemProps) {
 
     setOperatorList(operators);
 
-    if (!operator || !firstLoop) {
+    if (!operatorKey && (!operator || !firstLoop)) {
       setOperator(operators[0]);
       setOperatorKey(_get(operators, "0.key"));
     }
   }, [column]);
-
-  useEffect(() => {
-    if (!columnKey || column?.key === columnKey) return;
-
-    setColumn(columns.find((col) => col.key === columnKey));
-  }, [columnKey]);
-
-  useEffect(() => {
-    if (!operatorKey || operator?.key === operatorKey) return;
-
-    setOperator(operatorList.find((op) => op.key === operatorKey));
-  }, [operatorKey]);
 
   useEffect(() => {
     if (isBetween) {
@@ -145,16 +126,16 @@ export function FilterItem({ name, columns, onAdd, onRmv }: FilterItemProps) {
         name={`${name}.operator`}
         label="Operador"
         options={operatorList}
-        isDisabled={!column}
+        isDisabled={!column || _isEmpty(column)}
         track={{ key: "key", label: "label" }}
       />
       {column?.type !== "date" ? (
         <TextField.Form
-          isDisabled={!column}
+          isDisabled={!column || _isEmpty(column)}
           name={`${name}.content[0]`}
           label={isBetween ? "De" : "Pesquisa"}
           mask={
-            column?.type in contentMasks
+            column?.type in contentMasks && !isInOperation
               ? contentMasks[column.type as FilterTypes]
               : undefined
           }
@@ -186,22 +167,28 @@ export function FilterItem({ name, columns, onAdd, onRmv }: FilterItemProps) {
           />
         ))}
       <div className="flex justify-end gap-2">
-        <Button
-          isIconOnly
-          variant="flat"
-          color="danger"
-          onClick={handleClick(onRmv)}
-        >
-          <FontAwesomeIcon icon={faTrash} />
-        </Button>
-        <Button
-          isIconOnly
-          variant="flat"
-          color="primary"
-          onClick={handleClick(onAdd)}
-        >
-          <FontAwesomeIcon icon={faPlus} />
-        </Button>
+        {!isLast && (
+          <Button
+            isIconOnly
+            variant="flat"
+            color="danger"
+            isDisabled={isLast}
+            onClick={handleClick(onRmv)}
+          >
+            <FontAwesomeIcon icon={faTrash} />
+          </Button>
+        )}
+        {isLast && (
+          <Button
+            isIconOnly
+            variant="flat"
+            color="primary"
+            isDisabled={!isLast}
+            onClick={handleClick(onAdd)}
+          >
+            <FontAwesomeIcon icon={faPlus} />
+          </Button>
+        )}
       </div>
     </div>
   );

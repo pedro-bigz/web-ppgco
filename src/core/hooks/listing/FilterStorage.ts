@@ -1,6 +1,7 @@
 import _get from "lodash/get";
 import _omit from "lodash/omit";
 import { Filters } from "./useFilters";
+import { GenericFunction } from "utils";
 
 export const DEFAULT_STORAGE_KEY = "ppgco-listing-filter";
 
@@ -43,5 +44,31 @@ export class FilterStorage {
 
   public clear(pathname: string) {
     this.replace(pathname, {});
+  }
+
+  private protect(callback: GenericFunction) {
+    try {
+      callback();
+
+      return { success: true };
+    } catch (error) {
+      return { success: false, error };
+    }
+  }
+
+  public safeAppend(pathname: string, filters: Filters) {
+    return this.protect(() => this.append(pathname, filters));
+  }
+
+  public safeReplace(pathname: string, filters: Filters) {
+    return this.protect(() => this.replace(pathname, filters));
+  }
+
+  public safeReset(pathname: string) {
+    return this.protect(() => this.reset(pathname));
+  }
+
+  public safeClear(pathname: string) {
+    return this.safeReplace(pathname, {});
   }
 }

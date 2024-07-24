@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import _omit from "lodash/omit";
 
@@ -87,7 +88,7 @@ export const stringOps = [
   { key: StringOperations.contains, label: "Contém" },
   { key: StringOperations.equals, label: "Igual" },
   { key: StringOperations.startsWith, label: "Começa com" },
-  { key: StringOperations.endsWith, label: "termina com" },
+  { key: StringOperations.endsWith, label: "Termina com" },
   { key: StringOperations.notContains, label: "Não contém" },
   { key: StringOperations.notEquals, label: "Diferente" },
   { key: StringOperations.in, label: "Contido Em" },
@@ -98,8 +99,8 @@ export const numberOps = [
   { key: NumberOperations.equals, label: "Igual" },
   { key: NumberOperations.gt, label: "Maior que" },
   { key: NumberOperations.gte, label: "Maior ou igual a" },
-  { key: NumberOperations.lt, label: "menor que" },
-  { key: NumberOperations.lte, label: "menor ou igual a" },
+  { key: NumberOperations.lt, label: "Menor que" },
+  { key: NumberOperations.lte, label: "Menor ou igual a" },
   { key: NumberOperations.notEquals, label: "Diferente" },
   { key: NumberOperations.between, label: "Entre" },
   { key: NumberOperations.notBetween, label: "Não Entre" },
@@ -111,8 +112,8 @@ export const dateOps = [
   { key: DateOperations.equals, label: "Igual" },
   { key: DateOperations.gt, label: "Maior que" },
   { key: DateOperations.gte, label: "Maior ou igual a" },
-  { key: DateOperations.lt, label: "menor que" },
-  { key: DateOperations.lte, label: "menor ou igual a" },
+  { key: DateOperations.lt, label: "Menor que" },
+  { key: DateOperations.lte, label: "Menor ou igual a" },
   { key: DateOperations.between, label: "Entre" },
   { key: DateOperations.notBetween, label: "Não Entre" },
   { key: DateOperations.notEquals, label: "Diferente" },
@@ -159,11 +160,23 @@ export function useFilters(defaultFilters: Filters) {
   };
 
   const resetSavedFilters = () => {
-    filterStorage.reset(pathname);
+    const response = filterStorage.safeReset(pathname);
+
+    if (response.success) {
+      toast.success("Filtros removidos com sucesso");
+    } else {
+      toast.error("Erro ao resetar filtros");
+    }
   };
 
   const saveFilters = () => {
-    filterStorage.replace(pathname, filters);
+    const response = filterStorage.safeReplace(pathname, filters);
+
+    if (response.success) {
+      toast.success("Filtros salvos com sucesso");
+    } else {
+      toast.error("Erro ao salvar filtros");
+    }
   };
 
   useEffect(() => {

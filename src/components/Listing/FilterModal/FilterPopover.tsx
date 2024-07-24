@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { FieldValues, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSave } from "@fortawesome/free-solid-svg-icons";
 import {
   Button,
   ButtonProps,
@@ -15,15 +17,13 @@ import {
 } from "@nextui-org/react";
 import _isEmpty from "lodash/isEmpty";
 import _mapKeys from "lodash/mapKeys";
+import classnames from "classnames";
 import { Filters } from "core";
-import { FilterIcon } from "assets";
+import { FilterIcon, FilteringIcon } from "assets";
 import { handleClick } from "utils";
 import { Form } from "components/Form";
 import { FilterItem } from "./FilterItem";
 import { schema } from "./Filter.schema";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSave } from "@fortawesome/free-solid-svg-icons";
-import classnames from "classnames";
 
 export interface FilterModalProps {
   label: string;
@@ -48,8 +48,8 @@ export function FilterPopover({
   columns = [],
   buttonProps,
   defaultFilters = {},
-  onSave,
   onReset: onResetSaveds,
+  onSave,
   onFilter,
 }: FilterModalProps) {
   const [isOpen, onOpenChange] = useState(false);
@@ -70,7 +70,7 @@ export function FilterPopover({
   const { fields, append, remove } = useFieldArray({
     name: "filters",
     control,
-    // shouldUnregister: true,
+    shouldUnregister: true,
   });
 
   const onAdd = () =>
@@ -108,6 +108,7 @@ export function FilterPopover({
   return (
     <Popover
       isOpen={isOpen}
+      size="md"
       placement="bottom-end"
       onOpenChange={onOpenChange}
       classNames={{ content: "p-0" }}
@@ -121,7 +122,7 @@ export function FilterPopover({
             buttonProps?.className,
             "px-5 font-bold font-sfPro"
           )}
-          startContent={<FilterIcon color="text-primary" />}
+          startContent={<FilteringIcon color="text-primary" />}
         >
           {label}
         </Button>
@@ -139,6 +140,7 @@ export function FilterPopover({
                   radius="full"
                   type="button"
                   variant="flat"
+                  className="border-small border-[#cdcdcd]"
                   onClick={handleClick(onSave)}
                 >
                   <FontAwesomeIcon icon={faSave} />
@@ -153,6 +155,7 @@ export function FilterPopover({
                     key={field.id}
                     name={`filters.${index}`}
                     columns={columns}
+                    isLast={index === fields.length - 1}
                     onAdd={onAdd}
                     onRmv={onRmv(index)}
                   />

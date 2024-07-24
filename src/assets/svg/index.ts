@@ -7,6 +7,7 @@ export * from "./full-screen-icon";
 export * from "./ascending-icon";
 export * from "./descending-icon";
 export * from "./filter-icon";
+export * from "./filtering-icon";
 export * from "./pencil-icon";
 export * from "./cloud-icon";
 export * from "./config-icon";
