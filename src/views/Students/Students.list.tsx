@@ -5,7 +5,7 @@ import { ListingProvider } from "core";
 export function StudentsListingPage() {
   return (
     <ListingProvider>
-      <ListingHeader title="Estudantes" />
+      <ListingHeader title="Estudantes" columns={columns} />
       <ListingBody endpoint="/students" columns={columns} />
     </ListingProvider>
   );

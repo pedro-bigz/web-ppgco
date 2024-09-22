@@ -10,3 +10,4 @@ export * from "./Configurations";
 export * from "./DefaultMilestones";
 export * from "./Notifications";
 export * from "./Users";
+export * from "./Dashboard";

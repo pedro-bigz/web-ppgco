@@ -1,12 +1,12 @@
 import { useController, useFormContext } from "react-hook-form";
 import _get from "lodash/get";
 import {
-  OnChangeAttributes,
   AsyncSelect,
   AsyncSelectOnChangeHandler,
   AsyncSelectProps,
 } from "../AsyncSelect";
 import { TextField } from "components/Form/TextField";
+import { SelectOnChangeAttributes } from "core";
 
 export interface ControlledAsyncSelectProps
   extends Omit<AsyncSelectProps, "errorMessage" | "onChange"> {
@@ -31,7 +31,7 @@ export function ControlledAsyncSelect({
   const error = _get(formState.errors, name);
   const selectError = _get(formState.errors, selectName);
 
-  const onSelectChange = ({ e, options, keys }: OnChangeAttributes) => {
+  const onSelectChange = ({ e, options, keys }: SelectOnChangeAttributes) => {
     field.onChange(e.target.value);
     setValue(name, options);
     onChange?.({ e, options, keys });

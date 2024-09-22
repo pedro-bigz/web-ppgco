@@ -1,30 +1,8 @@
 export const columns = [
-  {
-    key: "id",
-    label: "ID",
-  },
-  {
-    key: "user.first_name",
-    label: "Nome",
-  },
-  {
-    key: "user.last_name",
-    label: "Sobrenome",
-  },
-  {
-    key: "user.email",
-    label: "E-mail",
-  },
-  {
-    key: "user.birth_date",
-    label: "Data de Nascimento",
-  },
-  {
-    key: "researchLine.title",
-    label: "Linha de Pesquisa",
-  },
-  {
-    key: "lattes",
-    label: "Lattes",
-  },
+  { key: "id", label: "ID", type: "number" },
+  { key: "advisor_name", label: "Nome Completo", type: "string" },
+  { key: "email", label: "E-mail", type: "string" },
+  { key: "birth_date", label: "Data de Nascimento", type: "date" },
+  { key: "research_line_title", label: "Linha de Pesquisa", type: "string" },
+  { key: "lattes", label: "Lattes", type: "string" },
 ];

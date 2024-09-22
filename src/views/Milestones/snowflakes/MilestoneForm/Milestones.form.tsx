@@ -17,7 +17,6 @@ import {
 import { run } from "utils";
 import { TrashIcon } from "assets";
 import { useMilestoneForm } from "./useMilestoneForm";
-import { idID } from "@mui/material/locale";
 
 export interface MilestoneFormProps {
   milestoneId?: string;
@@ -104,7 +103,7 @@ export function MilestoneForm({ milestoneId, schema }: MilestoneFormProps) {
           />
         </div>
         <div className="flex flex-col gap-3">
-          <Checkbox name="need_document" label="Necessita documentação" />
+          <Checkbox.Form name="need_document" label="Necessita documentação" />
 
           {hasDocuments && (
             <div className="flex flex-col gap-3">

@@ -22,6 +22,8 @@ export function LoginForm() {
   const handleSubmitForm = ({ keepConnected, ...formValues }: FieldValues) => {
     tokenStorage.keepConnected(keepConnected);
 
+    console.log({ formValues });
+
     onSubmitForm(formValues as LoginFormDto, {
       onSuccess({ auth, user }) {
         tokenStorage.setToken(auth.accessToken);
@@ -62,7 +64,11 @@ export function LoginForm() {
             }}
           />
 
-          <Checkbox name="keepConnected" className="mt-4" defaultSelected />
+          <Checkbox.Form
+            name="keepConnected"
+            className="mt-4"
+            defaultSelected
+          />
           <label>Manter-me conectado</label>
         </div>
 

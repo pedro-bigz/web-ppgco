@@ -79,10 +79,15 @@ export function AsyncSelect({
       },
     } as ChangeEvent<HTMLSelectElement>;
 
+    console.log({ e, options, keys });
+
     if (!options) {
+      console.log({ e: !!e, options: !!options });
       if (!required) onChange?.({ e });
       else console.error("AsyncSelect item not founded");
     }
+
+    console.log({ e, options, keys });
 
     onChange?.({ e, options, keys });
   };
@@ -123,7 +128,7 @@ export function AsyncSelect({
         const itemKey = _get(option, track.key) as string;
         return (
           <SelectItem key={itemKey} value={itemKey}>
-            {_get(option, track.label) as string}
+            {_get(option, track.label, undefined)}
           </SelectItem>
         );
       })}

@@ -1,3 +1,4 @@
+import { MouseEvent, Ref, useEffect, useRef, useState } from "react";
 import {
   Dropdown,
   DropdownTrigger,
@@ -5,7 +6,6 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
-import { MouseEvent } from "react";
 import { TableRowInterface } from "./Table";
 import classnames from "classnames";
 
@@ -36,25 +36,48 @@ const handleOnClick = (action: ActionsItem, item: TableRowInterface) => {
   };
 };
 
+const useContainerHeightCorrection = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const [dropdownHeight, setDropdownHeight] = useState<number>(0);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const currentTD = containerRef.current.parentNode as HTMLTableCellElement;
+    const prevTD = currentTD?.previousSibling as HTMLTableCellElement;
+
+    setDropdownHeight(prevTD?.offsetHeight);
+  }, [containerRef.current]);
+
+  return { containerRef, dropdownHeight };
+};
+
 export function ActionsDropdown({
   actions,
   item,
   isEndTable,
   classNames,
 }: ActionsDropdownProps) {
+  const { containerRef, dropdownHeight } = useContainerHeightCorrection();
+
   return (
-    <div className="flex h-[56px] w-[130px]">
+    <div
+      ref={containerRef}
+      className="flex w-[130px]"
+      style={{ height: dropdownHeight }}
+    >
       <div
         className={classnames(
           "flex justify-end",
           "bg-[#6e6e6e63] blur-sm",
-          "h-[56px] w-[4px] rounded-l-md z-[99]",
+          "h-inherit w-[4px] rounded-l-md z-[99]",
           { hidden: isEndTable }
         )}
       ></div>
       <div
         className={classnames(
-          "flex flex-grow items-center justify-center h-[56px] w-[125px] z-[100]",
+          "flex flex-grow items-center justify-center h-inherit w-[125px] z-[100]",
           {
             "bg-white": !isEndTable,
             "bg-transparent": !isEndTable,

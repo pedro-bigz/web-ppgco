@@ -5,7 +5,7 @@ import { columns } from "./Professors.mock";
 export function ProfessorsListingPage() {
   return (
     <ListingProvider>
-      <ListingHeader title="Professores" />
+      <ListingHeader title="Professores" columns={columns} />
       <ListingBody endpoint="/advisors" columns={columns} />
     </ListingProvider>
   );

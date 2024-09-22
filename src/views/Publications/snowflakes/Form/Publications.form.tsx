@@ -10,13 +10,75 @@ import {
   TextField,
 } from "components";
 import { usePublicationsForm } from "./usePublicationsForm";
-import { run } from "utils";
+import { GenericFunction, run } from "utils";
 import { useRoles } from "core/hooks/contexts/useRoles";
 import { ROLES } from "services";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export interface PublicationFormProps {
   publicationId?: string;
   schema: ZodSchema;
+}
+
+interface CoauthorsFieldsProps {
+  coauthors: any[];
+  addCoauthor: GenericFunction;
+  rmvCoauthor: GenericFunction;
+}
+
+function CoauthorsFields({
+  coauthors,
+  addCoauthor,
+  rmvCoauthor,
+}: CoauthorsFieldsProps) {
+  return (
+    <div className="flex flex-col gap-3">
+      {coauthors.map((_coauthor, index) => (
+        <div key={index} className="flex grid grid-cols-10 gap-3">
+          <TextField.Form
+            label="Nome"
+            name={`coauthors.${index}.first_name`}
+            className="col-span-4"
+          />
+          <TextField.Form
+            label="Sobrenome"
+            name={`coauthors.${index}.last_name`}
+            className="col-span-6"
+          />
+          <TextField.Form
+            label="Lattes"
+            name={`coauthors.${index}.lattes`}
+            className="col-span-5"
+          />
+          <TextField.Form
+            label="Afiliação"
+            name={`coauthors.${index}.affiliation`}
+            className="col-span-5"
+          />
+          {index === coauthors.length - 1 ? (
+            <Button
+              isIconOnly
+              size="lg"
+              color="primary"
+              onClick={addCoauthor()}
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </Button>
+          ) : (
+            <Button
+              isIconOnly
+              size="lg"
+              color="danger"
+              onClick={rmvCoauthor(index)}
+            >
+              <FontAwesomeIcon icon={faMinus} />
+            </Button>
+          )}
+        </div>
+      ))}
+    </div>
+  );
 }
 
 export function PublicationsForm({
@@ -25,9 +87,12 @@ export function PublicationsForm({
 }: PublicationFormProps) {
   const { hasRoles } = useRoles();
   const {
+    coauthors,
     projects,
     isEditPage,
     addProject,
+    addCoauthor,
+    rmvCoauthor,
     removeProject,
     handleOnSubmit,
     onSelectProject,
@@ -41,7 +106,7 @@ export function PublicationsForm({
     <CardForm {...formProps} onSubmit={handleOnSubmit}>
       <div className="flex flex-col gap-3">
         <h3 className="text-base font-bold font-montserrat">
-          Formulário de {!isEditPage ? "cadastro" : "edição"} de Publicationes
+          Formulário de {!isEditPage ? "cadastro" : "edição"} de Publicações
         </h3>
         {!isEditPage && !hasRoles(ROLES.Student) && (
           <div className="flex flex-wrap gap-1">
@@ -58,7 +123,7 @@ export function PublicationsForm({
         {!hasRoles(ROLES.Student) && (
           <div className="flex flex-col gap-3">
             {!isEditPage ? (
-              <AsyncSelect.Uncontrolled
+              <AsyncAutocomplete.Uncontrolled
                 name="project"
                 label="Projeto"
                 endpoint="projects"
@@ -81,8 +146,18 @@ export function PublicationsForm({
           <TextField.Form name="vehicle_name" label="Veículo de Publicação" />
         </div>
         <div className="flex grid md:grid-cols-2 gap-3">
-          <DatePicker.Form name="start_date" label="E-mail" />
-          <DatePicker.Form name="end_date" label="E-mail" />
+          <DatePicker.Form name="start_date" label="Data de Início" />
+          <DatePicker.Form name="end_date" label="Data de Fim" />
+        </div>
+        <div className="flex flex-col gap-3">
+          <h3>Coautores</h3>
+          <div>
+            <CoauthorsFields
+              coauthors={coauthors}
+              addCoauthor={addCoauthor}
+              rmvCoauthor={rmvCoauthor}
+            />
+          </div>
         </div>
         <div className="flex justify-end mt-5">
           <Button

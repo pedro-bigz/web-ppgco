@@ -8,6 +8,7 @@ import { useTableSort } from "./useTableSort";
 import { useBulkSelection } from "./useBulkSelection";
 import dayjs from "dayjs";
 import { useTableScroller } from "./useTableScroller";
+import { isValidUTCDate, isValidUTCDateTime } from "utils";
 
 type Key = string | number;
 
@@ -62,13 +63,13 @@ export function useTable({
 
     const date = dayjs(text, "YYYY-MM-DD");
 
-    if (date.isValid()) {
+    if (isValidUTCDate(text) && date.isValid()) {
       return date.format("DD MMM YYYY");
     }
 
     const dateTime = dayjs(text, "YYYY-MM-DDTHH:mm:ss.SSSZ");
 
-    if (dateTime.isValid()) {
+    if (isValidUTCDateTime(text) && dateTime.isValid()) {
       return dateTime.format("DD/MM/YYYY [ás] HH:mm");
     }
 

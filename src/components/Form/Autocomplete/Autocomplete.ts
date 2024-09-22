@@ -3,7 +3,6 @@ import {
   ControlledAutocompleteProps,
   UncontrolledAutocomplete,
   UncontrolledAutocompleteProps,
-  AutocompleteOption,
   AutocompleteOnChangeHandler,
 } from "./partials";
 
@@ -21,7 +20,6 @@ export type {
   AutocompleteProps,
   ControlledAutocompleteProps,
   UncontrolledAutocompleteProps,
-  AutocompleteOption,
   AutocompleteOnChangeHandler,
 };
 export {

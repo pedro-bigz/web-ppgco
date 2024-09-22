@@ -235,7 +235,7 @@ function FormContent({
         />
       </div>
       <div className="flex flex-col gap-3">
-        <Checkbox
+        <Checkbox.Form
           name={`data.${formId}.need_document`}
           label="Necessita de documentação"
         />

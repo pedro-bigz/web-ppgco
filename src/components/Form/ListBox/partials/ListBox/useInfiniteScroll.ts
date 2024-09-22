@@ -1,4 +1,4 @@
-import { UIEvent, useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 interface UseInfiniteScroll {
   hasMore: boolean;

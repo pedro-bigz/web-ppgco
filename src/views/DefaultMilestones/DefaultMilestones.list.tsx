@@ -5,7 +5,12 @@ import { columns } from "./DefaultMilestones.mock";
 export function DefaultMilestoneListingPage() {
   return (
     <ListingProvider>
-      <ListingHeader title="Marcos Temporais" hideFilters hideCreateButton />
+      <ListingHeader
+        title="Marcos Temporais"
+        hideFilters
+        hideCreateButton
+        columns={columns}
+      />
       <ListingBody
         endpoint="/default-milestones"
         columns={columns}

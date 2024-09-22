@@ -1,3 +1,4 @@
+import { UnderDevelopment } from "components";
 import { RouteObject } from "react-router-dom";
 import {
   SubjectsCreatePage,
@@ -26,16 +27,21 @@ import {
   UsersListingPage,
   UsersCreatePage,
   UsersUpdatePage,
+  DashboardPage,
 } from "views";
 
 export const privateRoutes: RouteObject[] = [
   {
     path: "/",
-    element: <div>Hello</div>,
+    element: (
+      <div>
+        <UnderDevelopment />
+      </div>
+    ),
   },
   {
     path: "/dashboard",
-    element: <div>Hello</div>,
+    element: <DashboardPage />,
   },
   {
     path: "/disciplinas",

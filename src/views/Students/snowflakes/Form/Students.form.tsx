@@ -86,7 +86,7 @@ export function StudentsForm({ studentId, schema }: StudentsFormProps) {
           />
         </div>
         <div className="flex grid md:grid-cols-5 gap-3">
-          <Checkbox
+          <Checkbox.Form
             name="has_scholarship"
             label="Possui bolsa"
             className="col-span-1"

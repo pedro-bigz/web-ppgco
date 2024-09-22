@@ -9,10 +9,10 @@ import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import _map from "lodash/map";
 import _isEmpty from "lodash/isEmpty";
+import _trim from "lodash/trim";
 import { initFormFields } from "utils";
 import { useApiMutate } from "core/hooks/api";
 import { useLoadingContext } from "core/hooks/contexts";
-import _trim from "lodash/trim";
 import { queryClient } from "core";
 
 export interface SubmitHandler {
@@ -92,7 +92,7 @@ export function useCustomForm<
     console.log({ data });
 
     onSubmitCallbacks?.beforeSubmit?.(data);
-    mutate(data, {
+    mutate(data as any, {
       onSuccess(data: unknown, variables: unknown, context: unknown) {
         queryClient.removeQueries();
 

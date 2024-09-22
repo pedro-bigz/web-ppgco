@@ -5,7 +5,7 @@ import { columns } from "./Publications.mock";
 export function PublicationsListingPage() {
   return (
     <ListingProvider>
-      <ListingHeader title="Publicações" />
+      <ListingHeader title="Publicações" columns={columns} />
       <ListingBody endpoint="/publications" columns={columns} />
     </ListingProvider>
   );

@@ -1,26 +1,8 @@
 export const columns = [
-  {
-    key: "id",
-    label: "ID",
-  },
-  {
-    key: "code",
-    label: "Código",
-  },
-  {
-    key: "name",
-    label: "Nome",
-  },
-  {
-    key: "workload",
-    label: "Carga Horária",
-  },
-  {
-    key: "credits",
-    label: "Créditos",
-  },
-  {
-    key: "course.name",
-    label: "Curso",
-  },
+  { key: "id", label: "ID", type: "number" },
+  { key: "code", label: "Código", type: "string" },
+  { key: "name", label: "Nome", type: "string" },
+  { key: "workload", label: "Carga Horária", type: "number" },
+  { key: "credits", label: "Créditos", type: "number" },
+  { key: "course_name", label: "Curso", type: "string" },
 ];

@@ -1,11 +1,17 @@
 import { ZodSchema } from "zod";
 import _trimEnd from "lodash/trimEnd";
 
-import { useDynamicForm } from "components";
+import { resolveEndpoint } from "components";
 import { useGetPublication } from "views/Publications/api";
-import { parseDate } from "@internationalized/date";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useFieldArray } from "react-hook-form";
+import { useCustomForm } from "core";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+interface PublicationFormTypes {
+  project_ids: string[];
+  coauthors: { name: string }[];
+}
 
 export interface PublicationFormProps {
   publicationId?: string;
@@ -21,24 +27,37 @@ export function usePublicationsForm({
   const projectRef = useRef<Record<string, any>>({});
   const [projects, setProjects] = useState<Record<string, any>>({});
 
-  const { endpoint, data, setValue, ...formProps } = useDynamicForm({
-    schema,
-    registerId: publicationId,
-    useGetItem: useGetPublication,
-    action: "/publications",
-    method: !publicationId ? "post" : "patch",
-    onInitForm: (publication) => {
-      return publication?.user?.birth_date
-        ? {
-            ...publication,
-            ...publication.user,
-            birth_date_picker: parseDate(publication.user?.birth_date),
-          }
-        : {};
-    },
-  });
+  const endpoint = resolveEndpoint("/publications", publicationId);
 
-  const { control } = formProps;
+  const { data: publication = {} } = useGetPublication(publicationId);
+
+  const initialFormState = useMemo(() => {
+    return {};
+    // return publication?.user?.birth_date
+    //   ? {
+    //       ...publication,
+    //       ...publication.user,
+    //       birth_date_picker: parseDate(publication.user?.birth_date),
+    //     }
+    //   : {};
+  }, [publication]);
+
+  const { onSubmit, handleOnSubmit, ...formProps } = useCustomForm(
+    { endpoint, method: !publicationId ? "post" : "patch" },
+    {
+      resolver: zodResolver(schema),
+      mode: "onSubmit",
+      defaultValues: {
+        project_ids: [],
+        coauthors: [{ name: "" }],
+      } as PublicationFormTypes,
+    },
+    {
+      reInitValues: initialFormState,
+    }
+  );
+
+  const { control, setValue } = formProps;
   const { fields, append, remove } = useFieldArray({
     control,
     name: "coauthors",
@@ -53,7 +72,14 @@ export function usePublicationsForm({
     return setProjects(({ [key]: _, ...state }) => ({ ...state }));
   };
 
+  const addCoauthor = () => () => {
+    console.log("add coauthor");
+    append({ name: "" });
+  };
+  const rmvCoauthor = (index: number) => () => remove(index);
+
   const onSelectProject = ({ key, option }: any) => {
+    console.log({ key, option });
     if (!key) return;
     return !projects.hasOwnProperty(key)
       ? addProject(key, option)
@@ -69,15 +95,15 @@ export function usePublicationsForm({
   }, [projects]);
 
   return {
-    publication: data,
-    coautors: fields,
+    publication,
+    coauthors: fields,
     isEditPage,
     projects,
-    append,
-    remove,
-    setValue,
+    addCoauthor,
+    rmvCoauthor,
     addProject,
     removeProject,
+    handleOnSubmit,
     onSelectProject,
     ...formProps,
   };
