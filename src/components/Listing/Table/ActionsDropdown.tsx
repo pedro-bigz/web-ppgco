@@ -64,7 +64,7 @@ export function ActionsDropdown({
   return (
     <div
       ref={containerRef}
-      className="flex w-[130px]"
+      className="flex min-h-[56px] w-[130px]"
       style={{ height: dropdownHeight }}
     >
       <div

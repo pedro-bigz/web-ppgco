@@ -73,7 +73,6 @@ export function Table({
     isRemoteData,
     onSelectKeys,
   });
-  console.log({ rows });
 
   return (
     <NextTable
