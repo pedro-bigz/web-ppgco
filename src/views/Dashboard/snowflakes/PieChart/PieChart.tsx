@@ -1,13 +1,16 @@
 import { useState } from "react";
-import { PieChart as RePieChart, Pie, Sector } from "recharts";
+import { PieChart as RePieChart, Pie, Sector, Tooltip } from "recharts";
 
 interface PieChartProps {
   data: any;
-  width: number;
-  height: number;
 }
 
-const renderActiveShape = (props: any) => {
+function formatChartTitle(title: string, length: number = 10) {
+  console.log({ title });
+  return title.substring(0, length) + (title.length > length ? "..." : "");
+}
+
+function renderActiveShape(props: any) {
   const RADIAN = Math.PI / 180;
   const {
     cx,
@@ -32,12 +35,10 @@ const renderActiveShape = (props: any) => {
   const ey = my;
   const textAnchor = cos >= 0 ? "start" : "end";
 
-  console.log({ props });
-
   return (
     <g>
       <text x={cx} y={cy} dy={8} textAnchor="middle" fill="black">
-        {payload.name}
+        {formatChartTitle(payload.name)}
       </text>
       <Sector
         cx={cx}
@@ -80,19 +81,17 @@ const renderActiveShape = (props: any) => {
       </text>
     </g>
   );
-};
+}
 
-export function PieChart({ data, width, height }: PieChartProps) {
+export function PieChart({ data }: PieChartProps) {
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
   const onPieEnter = (_: any, index: number) => {
     setActiveIndex(index);
   };
 
-  console.log({ width, height });
-
   return (
-    <RePieChart width={width} height={height}>
+    <RePieChart width={400} height={300}>
       <Pie
         activeIndex={activeIndex}
         activeShape={renderActiveShape}
@@ -105,6 +104,7 @@ export function PieChart({ data, width, height }: PieChartProps) {
         dataKey="value"
         onMouseEnter={onPieEnter}
       />
+      <Tooltip />
     </RePieChart>
   );
 }

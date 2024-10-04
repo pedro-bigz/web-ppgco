@@ -7,10 +7,12 @@ import {
   countProfessorByResearchLine,
 } from "services";
 import { Fieldset, Table, TableRowInterface } from "components";
-import { GenericFunction } from "utils";
+import { GenericFunction, randomicCreateColorList } from "utils";
 import { CirclePersonIcon } from "assets";
 import { CardList } from "../CardList";
 import { Card, CardBody, CardHeader } from "@nextui-org/react";
+import { ResponsiveChart } from "../ResponsiveChart";
+import { colors } from "views/Dashboard/Dashboard.constants";
 
 type ApiFunctionsInterface =
   | "countProfessor"
@@ -45,6 +47,11 @@ export function ProfessorData() {
   const averageByResearchLine =
     _sumBy(totalProfessorByResearchLine, "value") /
     totalProfessorByResearchLine.length;
+
+  // const researchLineColors = randomicCreateColorList(
+  //   totalProfessorByResearchLine.length,
+  //   colors
+  // );
 
   return (
     <Fieldset
@@ -82,6 +89,18 @@ export function ProfessorData() {
               value: item.value,
               isLoading: isLoadingTotalProfessorByResearchLine,
             }))}
+          />
+        </div>
+        <div className="flex grid grid-cols-3 gap-3">
+          <ResponsiveChart
+            title="Por Curso"
+            data={totalProfessorByResearchLine.map(
+              (item: any, index: number) => ({
+                name: item.research_line_title,
+                value: item.value,
+                fill: colors[index],
+              })
+            )}
           />
         </div>
         <Card>
