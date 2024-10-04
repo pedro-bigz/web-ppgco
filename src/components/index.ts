@@ -5,3 +5,4 @@ export * from "./LoadingModal";
 export * from "./ConfirmationModal";
 export * from "./Kbd";
 export * from "./UnderDevelopment";
+export * from "./Fieldset";

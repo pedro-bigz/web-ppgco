@@ -9,9 +9,11 @@ export type SvgIconDefinition = (props: SVGProps<SVGSVGElement>) => JSX.Element;
 
 export type GenericIconDefinition = IconDefinition | SvgIconDefinition;
 
+export type GenericIconProps = FontAwesomeIconProps | SVGProps<SVGSVGElement>;
+
 export interface IconProps {
-  icon: IconDefinition | SvgIconDefinition;
-  iconProps?: FontAwesomeIconProps | SVGProps<SVGSVGElement>;
+  icon: GenericIconDefinition;
+  iconProps?: GenericIconProps;
 }
 
 export function Icon({ icon, iconProps = {} }: IconProps) {

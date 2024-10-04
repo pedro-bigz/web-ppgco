@@ -5,34 +5,35 @@ export async function countStudents(params?: URLSearchParams) {
   return axiosMain.get("students/count", { params }).then(({ data }) => data);
 }
 
+export async function countStudentsWithLateMilestonesByCourse() {
+  return axiosMain
+    .get("students/count-with-late-milestones-by-course")
+    .then(({ data }) => data);
+}
+
 export async function countStudentsByCourse() {
   return countStudents(
     buildParams({
-      groupBy: "project.course_id",
+      groupBy: "course_id",
+      attributes: ["course_name"],
     })
   );
 }
 
 export async function countStudentsByResearchLine() {
   return countStudents(
-    new URLSearchParams({
-      groupBy: "project.research_line_id",
+    buildParams({
+      groupBy: "research_line_id",
+      attributes: ["research_line_title"],
     })
   );
 }
 
 export async function countStudentsByProfessor() {
   return countStudents(
-    new URLSearchParams({
-      groupBy: "project.advisor_id",
-    })
-  );
-}
-
-export async function countStudentsByLateMilestones() {
-  return countStudents(
-    new URLSearchParams({
-      groupBy: "project.advisor_id",
+    buildParams({
+      groupBy: "advisor_id",
+      attributes: "advisor_name",
     })
   );
 }

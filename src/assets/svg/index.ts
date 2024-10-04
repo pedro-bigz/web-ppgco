@@ -48,3 +48,4 @@ export * from "./plus-icon";
 export * from "./turn-left-icon";
 export * from "./youtube-icon";
 export * from "./research-line-icon";
+export * from "./circle-person-icon";
