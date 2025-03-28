@@ -5,7 +5,7 @@ import {
   queryOptions,
   useQuery,
 } from "@tanstack/react-query";
-import { TypeDefaultApiParams } from "core/jwt";
+import { TypeDefaultApiParams } from "core/types";
 import { axiosInstances } from "core/api";
 
 interface ParamsUseApiQuery extends TypeDefaultApiParams {

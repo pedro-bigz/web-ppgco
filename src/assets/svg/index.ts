@@ -49,3 +49,5 @@ export * from "./turn-left-icon";
 export * from "./youtube-icon";
 export * from "./research-line-icon";
 export * from "./circle-person-icon";
+export * from "./loading-logo-icon";
+export * from "./logo-icon";

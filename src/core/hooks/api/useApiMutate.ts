@@ -1,8 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
+import { DefaultError, useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-import { axiosInstances } from "core";
-import { TypeDefaultApiParams } from "./types";
+import { axiosInstances, TypeDefaultApiParams } from "core";
 import { logger } from "utils";
 
 interface ParamsUseApiMutate extends TypeDefaultApiParams {
@@ -31,16 +30,16 @@ export function useApiMutate<Param, Response>({
 
       const safeData = responseSchema.safeParse(data);
 
-      if (safeData.success) return safeData.data as Response;
+      if (safeData.success) {
+        return safeData.data as Response;
+      }
 
       if (message?.error || enableDefaultToast) {
-        toast.error(message?.error || "Houve um erro nos dados recebidos.");
+        throw new Error();
       }
+
       return data;
     } catch (err) {
-      if (message?.error || enableDefaultToast) {
-        toast.error(message?.error || "Houve um erro na requisição.");
-      }
       return Promise.reject(err);
     }
   };
@@ -63,5 +62,8 @@ export function useApiMutate<Param, Response>({
     return Promise.reject({} as Response);
   };
 
-  return useMutation({ mutationFn: handleMutate, ...options });
+  return useMutation<Response, DefaultError, Param, unknown>({
+    mutationFn: handleMutate,
+    ...options,
+  });
 }

@@ -1,7 +1,8 @@
 import { Listbox, ListboxItem, Tooltip } from "@nextui-org/react";
 import classNames from "classnames";
 
-import { ChevronRight, LogoUFU45 } from "assets";
+import { LogoUFU } from "core";
+import { ChevronRight } from "assets";
 import { Icon, ListboxWrapper } from "components";
 import { useSidebar } from "./useSidebar";
 
@@ -25,8 +26,13 @@ export function Sidebar() {
         }
       )}
     >
-      <div className="my-2 flex items-center justify-center gap-4 p-4">
-        <img src={LogoUFU45} alt="brand" className="mb-4" />
+      <div
+        className={classNames(
+          "my-2 flex items-center justify-center gap-4",
+          isOpen ? "px-10 pt-8 pb-4" : "p-4"
+        )}
+      >
+        <img src={LogoUFU} alt="brand" className="mb-4" />
       </div>
 
       <ListboxWrapper className="mx-[21px] my-[14px] w-full max-w-[260px] px-1 py-2">

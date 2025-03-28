@@ -1,4 +1,4 @@
-import { LoginPage, NotFoundPage } from "views";
+import { ForgotPasswordPage, LoginPage, NotFoundPage, ResetPasswordPage } from "views";
   
 export const publicRoutes = [
   {
@@ -8,5 +8,13 @@ export const publicRoutes = [
   {
     path: "*",
     element: <NotFoundPage />,
+  },
+  {
+    path: "/esqueci-a-senha",
+    element: <ForgotPasswordPage />,
+  },
+  {
+    path: "/redefinir-senha/:token",
+    element: <ResetPasswordPage />,
   },
 ];

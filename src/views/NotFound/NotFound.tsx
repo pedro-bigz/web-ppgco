@@ -1,7 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { handleClick } from "utils";
 
-export function NotFoundPage() {
+interface NotFoundPageProps {
+  link?: string;
+}
+
+export function NotFoundPage({ link }: NotFoundPageProps) {
   const navigate = useNavigate();
 
   return (
@@ -13,7 +17,7 @@ export function NotFoundPage() {
           <a
             href="javascript:void(0)"
             className="font-mono text-xl no-underline hover:underline text-slate-400 hover:text-lime-600"
-            onClick={handleClick(navigate, "/")}
+            onClick={handleClick(navigate, link || "/")}
           >
             Voltar para o início
           </a>

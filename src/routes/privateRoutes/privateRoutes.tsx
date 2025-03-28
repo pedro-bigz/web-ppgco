@@ -28,6 +28,7 @@ import {
   UsersCreatePage,
   UsersUpdatePage,
   DashboardPage,
+  CoversPage,
 } from "views";
 
 export const privateRoutes: RouteObject[] = [
@@ -146,5 +147,9 @@ export const privateRoutes: RouteObject[] = [
   {
     path: "/usuarios/:id/cadastrar",
     element: <UsersUpdatePage />,
+  },
+  {
+    path: "/banners",
+    element: <CoversPage />,
   },
 ];

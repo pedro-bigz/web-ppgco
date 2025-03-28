@@ -9,4 +9,5 @@ export * from "./TextArea";
 export * from "./TextField";
 export * from "./DatePicker";
 export * from "./DynamicForm";
+export * from "./FileUploader";
 export * from "./RichTextEditor";

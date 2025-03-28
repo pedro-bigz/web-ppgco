@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FieldValues, useForm } from "react-hook-form";
 import { Button } from "@nextui-org/react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -75,6 +75,12 @@ export function LoginForm() {
         <Button type="submit" size="lg" className="bg-blue h-16 text-white">
           <span className="font-nexa">Entrar</span>
         </Button>
+
+        <div className="flex justify-center py-5">
+          <Link to="/esqueci-a-senha" className="text-[#0500d1]">
+            Esqueceu sua senha?
+          </Link>
+        </div>
       </div>
     </Form>
   );

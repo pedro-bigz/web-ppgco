@@ -27,6 +27,7 @@ export type ApiProfileResponse = UserDataType & WithPermissions & WithRoles;
 
 export type UserProviderValueInterface = {
   user?: Record<string, any>;
+  isLoadingUser: boolean;
   roles: string[];
   permissions: string[];
   resetUser: () => void;
@@ -37,6 +38,7 @@ const UserProviderDefaultValues = {
   user: undefined,
   roles: [],
   permissions: [],
+  isLoadingUser: false,
   setUser: () => undefined,
   resetUser: () => undefined,
 };
@@ -60,7 +62,7 @@ export function UserProvider({ children }: UserProviderProps) {
   const [permissions, setPermissions] = useState<string[]>(defaultPermissions);
   const [user, setUserData] = useState<UserDataType | undefined>(defaultUser);
 
-  const { data } = useUserApi<ApiProfileResponse>();
+  const { data, isLoading: isLoadingUser } = useUserApi<ApiProfileResponse>();
 
   const resetUser = () => setUserData(undefined);
   const setUser = (data: ApiProfileResponse) => {
@@ -82,6 +84,7 @@ export function UserProvider({ children }: UserProviderProps) {
         user,
         roles,
         permissions,
+        isLoadingUser,
         setUser,
         resetUser,
       }}
